@@ -64,6 +64,15 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
       );
       return db.query(insertUsersQuery);
     })
+    .then(() => {
+      const keyOrder = ["description", "slug"];
+      const topicsDataArray = convertObjectsToArrays(topicData, keyOrder);
+      const insertTopicsQuery = format(
+        `INSERT INTO topics (description, slug) VALUES %L`,
+        topicsDataArray
+      );
+      return db.query(insertTopicsQuery);
+    })
     .catch((err) => console.log(err));
 };
 

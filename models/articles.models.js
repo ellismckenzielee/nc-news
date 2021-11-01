@@ -16,16 +16,23 @@ exports.selectArticleById = (article_id) => {
 
 exports.updateArticleById = (article_id, votesInc) => {
   console.log("in deleteArticleById");
-  return db
-    .query(
-      "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",
-      [votesInc, article_id]
-    )
-    .then(({ rows }) => {
-      if (rows.length > 0) {
-        return rows[0];
-      } else {
-        return Promise.reject({ status: 404, msg: "article not found" });
-      }
+  if (typeof votesInc !== "number") {
+    return Promise.reject({
+      status: 400,
+      msg: "bad request: invalid vote increment",
     });
+  } else {
+    return db
+      .query(
+        "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",
+        [votesInc, article_id]
+      )
+      .then(({ rows }) => {
+        if (rows.length > 0) {
+          return rows[0];
+        } else {
+          return Promise.reject({ status: 404, msg: "article not found" });
+        }
+      });
+  }
 };

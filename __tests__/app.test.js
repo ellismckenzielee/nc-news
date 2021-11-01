@@ -106,7 +106,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("article not found");
           });
       });
-      it("status 400, responds with a message: bad request when invalid ID supplied", () => {
+      it("status: 400, responds with a message: bad request when invalid ID supplied", () => {
         const votesInc = 10;
 
         return request(app)
@@ -115,6 +115,17 @@ describe("testing app.js", () => {
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("bad request: invalid article name");
+          });
+      });
+      it.only("status: 400, responds with a message: bad request when passed votesInc is invalid", () => {
+        const votesInc = "badVote";
+
+        return request(app)
+          .patch("/api/articles/badId")
+          .send({ votesInc })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("bad request: invalid vote increment");
           });
       });
     });

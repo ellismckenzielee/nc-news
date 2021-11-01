@@ -25,4 +25,16 @@ utils.convertObjectsToArrays = (array, keyOrder) => {
 utils.updateObjectsArray = (array, referenceObject, keyToUpdate, newKey) => {
   /*returns an array of updated objects. keyToUpdate and newKe specify the name of the 
     key to update and the new key name, respectively*/
+  return array.map((item) => {
+    const updatedObj = {};
+    const keys = Object.keys(item);
+    keys.forEach((key) => {
+      if (key === keyToUpdate) {
+        updatedObj[newKey] = referenceObject[item[key]];
+      } else {
+        updatedObj[key] = item[key];
+      }
+    });
+    return updatedObj;
+  });
 };

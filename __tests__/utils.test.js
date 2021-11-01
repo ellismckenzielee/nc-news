@@ -222,4 +222,95 @@ describe("testing createReferenceObject function:", () => {
   });
 });
 
-describe("testing updateObjectsArray function", () => {});
+const refObj = {
+  butter_bridge: 1,
+  icellusedkars: 2,
+};
+describe("testing updateObjectsArray function:", () => {
+  describe("testing core functionality:", () => {
+    it("should return an empty array when passed an empty array", () => {
+      const inputArr = [];
+      const expected = [];
+      const actual = updateObjectsArray(inputArr);
+      expect(actual).toEqual(expected);
+    });
+    it("should return an array of length equal to the input array length", () => {
+      const inputArr = [{}, {}, {}];
+      const expected = 3;
+      const actual = updateObjectsArray(inputArr);
+      expect(actual.length).toBe(expected);
+    });
+    it("should return an array with a single object with keys updated, when passed an array with a single object", () => {
+      const inputArr = [
+        {
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "I find this existence challenging",
+          created_at: new Date(1594329060000),
+          votes: 100,
+        },
+      ];
+      const expected = [
+        {
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author_id: 1,
+          body: "I find this existence challenging",
+          created_at: new Date(1594329060000),
+          votes: 100,
+        },
+      ];
+      const keyToUpdate = "author";
+      const newKey = "author_id";
+      const actual = updateObjectsArray(inputArr, refObj, keyToUpdate, newKey);
+      expect(actual).toEqual(expected);
+    });
+    it("should return an array of objects with updated keys, when passed an array with mulitple objects", () => {
+      const inputArr = [
+        {
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "I find this existence challenging",
+          created_at: new Date(1594329060000),
+          votes: 100,
+        },
+        {
+          title: "Z",
+          topic: "mitch",
+          author: "icellusedkars",
+          body: "I was hungry.",
+          created_at: new Date(1578406080000),
+          votes: 0,
+        },
+      ];
+      const expected = [
+        {
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author_id: 1,
+          body: "I find this existence challenging",
+          created_at: new Date(1594329060000),
+          votes: 100,
+        },
+        {
+          title: "Z",
+          topic: "mitch",
+          author_id: 2,
+          body: "I was hungry.",
+          created_at: new Date(1578406080000),
+          votes: 0,
+        },
+      ];
+      const keyToUpdate = "author";
+      const newKey = "author_id";
+      const actual = updateObjectsArray(inputArr, refObj, keyToUpdate, newKey);
+      expect(actual).toEqual(expected);
+    });
+  });
+  describe("testing side effects:", () => {
+    it("input array should not be mutated", () => {});
+    it("input array reference should not equal the output array reference", () => {});
+  });
+});

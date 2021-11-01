@@ -6,7 +6,11 @@ exports.selectArticleById = (article_id) => {
     .query("SELECT * FROM articles WHERE article_id = $1", [article_id])
     .then(({ rows }) => {
       console.log("in rows", rows);
-      return rows[0];
+      if (rows.length > 0) {
+        return rows[0];
+      } else {
+        return Promise.reject({ status: 404, msg: "article not found" });
+      }
     });
 };
 

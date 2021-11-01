@@ -76,6 +76,14 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
+      it("status: 404, responds with a message: article does not exist when request is technically correct", () => {
+        return request(app)
+          .get("/api/articles/1000")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("article not found");
+          });
+      });
     });
     describe("PATCH", () => {
       it("status: 201, responds with updated article when votes increment sent in the request", () => {

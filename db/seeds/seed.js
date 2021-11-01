@@ -18,7 +18,7 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         user_id SERIAL PRIMARY KEY,
         username VARCHAR(25) NOT NULL,
         name VARCHAR NOT NULL,
-        avatar_url VARCHAR
+        avatar_url VARCHAR DEFAULT 'default_avatar_url'
         );`;
       return db.query(createUsersQuery);
     })

@@ -16,4 +16,6 @@ app.use("/*", (req, res, next) => {
   res.status(404).send({ msg: "Invalid URL" });
 });
 
+app.use(handle500);
+
 module.exports = app;

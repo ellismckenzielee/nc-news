@@ -14,3 +14,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
     next(err);
   }
 };
+
+exports.handle500 = (req, res, next) => {
+  res.status(500).send({ msg: "server error" });
+};

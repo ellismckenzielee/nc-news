@@ -22,7 +22,10 @@ exports.updateArticleById = (article_id, votesInc) => {
       [votesInc, article_id]
     )
     .then(({ rows }) => {
-      console.log(rows);
-      return rows[0];
+      if (rows.length > 0) {
+        return rows[0];
+      } else {
+        return Promise.reject({ status: 404, msg: "article not found" });
+      }
     });
 };

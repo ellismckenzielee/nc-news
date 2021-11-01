@@ -24,5 +24,5 @@ exports.patchArticleById = (req, res, next) => {
     .then((article) => {
       res.status(201).send({ article });
     })
-    .catch((err) => console.log(err));
+    .catch(next);
 };

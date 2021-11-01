@@ -76,7 +76,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it("status: 404, responds with a message: article does not exist when request is technically correct", () => {
+      it("status: 404, responds with a message: article not found when request is technically correct", () => {
         return request(app)
           .get("/api/articles/1000")
           .expect(404)
@@ -94,6 +94,16 @@ describe("testing app.js", () => {
           .expect(201)
           .then(({ body }) => {
             expect(body.article.votes).toBe(110);
+          });
+      });
+      it("status 404, responds with message: article not found", () => {
+        const votesInc = 10;
+        return request(app)
+          .patch("/api/articles/999")
+          .send({ votesInc })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("article not found");
           });
       });
     });

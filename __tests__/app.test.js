@@ -67,6 +67,27 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("bad request: invalid article name");
           });
       });
+      it("status: 404, responds with 404 and message Invalid URL if incorrect path specified", () => {
+        return request(app)
+          .get("/api/articless/3")
+          .expect(404)
+          .then(({ body }) => {
+            console.log(body);
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
+    });
+    describe("PATCH", () => {
+      it("status: 201, responds with updated article when votes increment sent in the request", () => {
+        const votesInc = 10;
+        return request(app)
+          .patch("/api/articles/1")
+          .send({ votesInc })
+          .expect(201)
+          .then(({ body }) => {
+            expect(body.article.votes).toBe(110);
+          });
+      });
     });
   });
 });

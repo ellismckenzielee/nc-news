@@ -6,6 +6,7 @@ const {
   handlePSQLErrors,
 } = require("./errors/error-handling.errors");
 
+app.use(express.json());
 app.use("/api", apiRouter);
 
 app.use(handleCustomErrors);

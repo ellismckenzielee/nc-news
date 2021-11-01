@@ -42,6 +42,17 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
       );`;
       return db.query(createArticlesQuery);
     })
+    .then(() => {
+      const createCommentsQuery = `CREATE TABLE comments (
+        comment_id SERIAL PRIMARY KEY,
+        body VARCHAR NOT NULL,
+        votes INT DEFAULT 0, 
+        author INT REFERENCES users(user_id) NOT NULL,
+        article_id INT REFERENCES articles(article_id) NOT NULL,
+        created_at DATE NOT NULL
+      );`;
+      return db.query(createCommentsQuery);
+    })
     .catch((err) => console.log(err));
 };
 

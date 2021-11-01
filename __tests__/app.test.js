@@ -106,6 +106,17 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("article not found");
           });
       });
+      it("status 400, responds with a message: bad request when invalid ID supplied", () => {
+        const votesInc = 10;
+
+        return request(app)
+          .patch("/api/articles/badId")
+          .send({ votesInc })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("bad request: invalid article name");
+          });
+      });
     });
   });
 });

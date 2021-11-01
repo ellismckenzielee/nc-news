@@ -32,9 +32,9 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
       const createArticlesQuery = `CREATE TABLE articles (
         article_id SERIAL PRIMARY KEY,
         title VARCHAR NOT NULL,
-        topic_id VARCHAR REFERENCES topics(slug) NOT NULL,
+        topic VARCHAR REFERENCES topics(slug) NOT NULL,
         body TEXT NOT NULL,
-        author_id VARCHAR REFERENCES users(username) NOT NULL,
+        author VARCHAR REFERENCES users(username) NOT NULL,
         created_at DATE NOT NULL,
         votes INT DEFAULT 0
       );`;
@@ -61,6 +61,47 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         `INSERT INTO users (username, name, avatar_url) VALUES %L`,
         userDataArray
       );
+      return db.query(insertUsersQuery);
+    })
+    .then(() => {
+      const topicDataArray = convertObjectsToArrays(topicData, [
+        "slug",
+        "description",
+      ]);
+      const insertTopicsQuery = format(
+        `INSERT INTO topics (slug, description) VALUES %L`,
+        topicDataArray
+      );
+      return db.query(insertTopicsQuery);
+    })
+    .then(() => {
+      const articleDataArray = convertObjectsToArrays(articleData, [
+        "title",
+        "topic",
+        "author",
+        "body",
+        "created_at",
+        "votes",
+      ]);
+      const insertArticlesQuery = format(
+        `INSERT INTO articles (title, topic, author, body, created_at, votes) VALUES %L`,
+        articleDataArray
+      );
+      return db.query(insertArticlesQuery);
+    })
+    .then(() => {
+      const commentDataArray = convertObjectsToArrays(commentData, [
+        "body",
+        "votes",
+        "author",
+        "article_id",
+        "created_at",
+      ]);
+      const insertCommentsQuery = format(
+        `INSERT INTO comments (body, votes, author, article_id, created_at) VALUES %L`,
+        commentDataArray
+      );
+      return db.query(insertCommentsQuery);
     })
 
     .catch((err) => console.log(err));

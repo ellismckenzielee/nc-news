@@ -22,6 +22,14 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         );`;
       return db.query(createUsersQuery);
     })
+    .then(() => {
+      const createTopicsQuery = `CREATE TABLE topics (
+        topic_id SERIAL PRIMARY KEY,
+        slug VARCHAR(20) NOT NULL,
+        description TEXT NOT NULL
+        );`;
+      return db.query(createTopicsQuery);
+    })
     .catch((err) => console.log(err));
 };
 

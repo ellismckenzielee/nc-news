@@ -35,7 +35,7 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         topic VARCHAR REFERENCES topics(slug) NOT NULL,
         body TEXT NOT NULL,
         author VARCHAR REFERENCES users(username) NOT NULL,
-        created_at DATE NOT NULL,
+        created_at DATE DEFAULT CURRENT_DATE,
         votes INT DEFAULT 0
       );`;
       return db.query(createArticlesQuery);
@@ -47,7 +47,7 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         votes INT DEFAULT 0, 
         author VARCHAR REFERENCES users(username) NOT NULL,
         article_id INT REFERENCES articles(article_id) NOT NULL,
-        created_at DATE NOT NULL
+        created_at DATE DEFAULT CURRENT_DATE
       );`;
       return db.query(createCommentsQuery);
     })

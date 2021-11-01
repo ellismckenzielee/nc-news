@@ -58,6 +58,15 @@ describe("testing app.js", () => {
             expect(body.article).toEqual(testArticle);
           });
       });
+      it("status: 400, responds with a message: bad request when invalid ID supplied", () => {
+        return request(app)
+          .get("/api/articles/wrongPATH")
+          .expect(400)
+          .then(({ body }) => {
+            console.log(body);
+            expect(body.msg).toBe("bad request: invalid article name");
+          });
+      });
     });
   });
 });

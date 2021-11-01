@@ -310,7 +310,52 @@ describe("testing updateObjectsArray function:", () => {
     });
   });
   describe("testing side effects:", () => {
-    it("input array should not be mutated", () => {});
-    it("input array reference should not equal the output array reference", () => {});
+    const inputArr = [
+      {
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: new Date(1594329060000),
+        votes: 100,
+      },
+      {
+        title: "Z",
+        topic: "mitch",
+        author: "icellusedkars",
+        body: "I was hungry.",
+        created_at: new Date(1578406080000),
+        votes: 0,
+      },
+    ];
+    const inputArrFixed = [
+      {
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: new Date(1594329060000),
+        votes: 100,
+      },
+      {
+        title: "Z",
+        topic: "mitch",
+        author: "icellusedkars",
+        body: "I was hungry.",
+        created_at: new Date(1578406080000),
+        votes: 0,
+      },
+    ];
+
+    const keyToUpdate = "author";
+    const newKey = "author_id";
+    const actual = updateObjectsArray(inputArr, refObj, keyToUpdate, newKey);
+
+    it("input array should not be mutated", () => {
+      expect(inputArr).toEqual(inputArrFixed);
+    });
+    it("input array reference should not equal the output array reference", () => {
+      expect(actual).not.toBe(inputArr);
+    });
   });
 });

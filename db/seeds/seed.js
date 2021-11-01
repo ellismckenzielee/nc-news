@@ -1,6 +1,10 @@
 const db = require("../connection");
 const format = require("pg-format");
-const { convertObjectsToArrays } = require("../utils/utils");
+const {
+  convertObjectsToArrays,
+  createReferenceObject,
+  updateObjectsArray,
+} = require("../utils/utils");
 
 const seed = ({ articleData, commentData, topicData, userData }) => {
   return db
@@ -56,7 +60,6 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
     })
     .then(() => {
       const keyOrder = ["username", "name", "avatar_url"];
-
       const userDataArray = convertObjectsToArrays(userData, keyOrder);
       const insertUsersQuery = format(
         `INSERT INTO users (username, name, avatar_url) VALUES %L RETURNING *;`,
@@ -75,6 +78,18 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
     })
     .then(([updatedUserData, { rows: updatedTopicData }]) => {
       console.log(updatedTopicData, updatedUserData);
+      const userUserIdReferenceObject = createReferenceObject(
+        updatedUserData,
+        "username",
+        "user_id"
+      );
+      const topicTopicIdReferenceObject = createReferenceObject(
+        updatedTopicData,
+        "slug",
+        "topic_id"
+      );
+      console.log(userUserIdReferenceObject);
+      console.log(topicTopicIdReferenceObject);
     })
     .catch((err) => console.log(err));
 };

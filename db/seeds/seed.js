@@ -39,7 +39,7 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
       const createArticlesQuery = `CREATE TABLE articles (
         article_id SERIAL PRIMARY KEY,
         title VARCHAR NOT NULL,
-        topic INT REFERENCES topics(topic_id) NOT NULL,
+        topic_id INT REFERENCES topics(topic_id) NOT NULL,
         body TEXT NOT NULL,
         author_id INT REFERENCES users(user_id) NOT NULL,
         created_at DATE NOT NULL,
@@ -77,7 +77,6 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
       return Promise.all([updatedUserData, db.query(insertTopicsQuery)]);
     })
     .then(([updatedUserData, { rows: updatedTopicData }]) => {
-      console.log(updatedTopicData, updatedUserData);
       const userUserIdReferenceObject = createReferenceObject(
         updatedUserData,
         "username",
@@ -88,10 +87,48 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         "slug",
         "topic_id"
       );
-      console.log(userUserIdReferenceObject);
-      console.log(topicTopicIdReferenceObject);
+      const articleDataUpdatedUsers = updateObjectsArray(
+        articleData,
+        userUserIdReferenceObject,
+        "author",
+        "author_id"
+      );
+      const articleDataUpdatedTopics = updateObjectsArray(
+        articleDataUpdatedUsers,
+        topicTopicIdReferenceObject,
+        "topic",
+        "topic_id"
+      );
+      const articleDataArray = convertObjectsToArrays(
+        articleDataUpdatedTopics,
+        ["title", "topic_id", "author_id", "body", "created_at", "votes"]
+      );
+      const insertArticlesQuery = format(
+        `INSERT INTO articles (title, topic_id, author_id, body, created_at, votes) VALUES %L`,
+        articleDataArray
+      );
+
+      const commentDataUpdatedUsers = updateObjectsArray(
+        commentData,
+        userUserIdReferenceObject,
+        "author",
+        "author_id"
+      );
+
+      return Promise.all([userUserIdReferenceObject, db.query(insertArticlesQuery)]);
+    })
+    .then (() => {
+
     })
     .catch((err) => console.log(err));
 };
 
 module.exports = seed;
+
+REATE TABLE comments (
+  comment_id SERIAL PRIMARY KEY,
+  body VARCHAR NOT NULL,
+  votes INT DEFAULT 0, 
+  author_id INT REFERENCES users(user_id) NOT NULL,
+  article_id INT REFERENCES articles(article_id) NOT NULL,
+  created_at DATE NOT NULL

@@ -59,19 +59,22 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
 
       const userDataArray = convertObjectsToArrays(userData, keyOrder);
       const insertUsersQuery = format(
-        `INSERT INTO users (username, name, avatar_url) VALUES %L`,
+        `INSERT INTO users (username, name, avatar_url) VALUES %L RETURNING *;`,
         userDataArray
       );
       return db.query(insertUsersQuery);
     })
-    .then(() => {
+    .then(({ rows: updatedUserData }) => {
       const keyOrder = ["description", "slug"];
       const topicsDataArray = convertObjectsToArrays(topicData, keyOrder);
       const insertTopicsQuery = format(
-        `INSERT INTO topics (description, slug) VALUES %L`,
+        `INSERT INTO topics (description, slug) VALUES %L RETURNING *;`,
         topicsDataArray
       );
-      return db.query(insertTopicsQuery);
+      return Promise.all([updatedUserData, db.query(insertTopicsQuery)]);
+    })
+    .then(([updatedUserData, { rows: updatedTopicData }]) => {
+      console.log(updatedTopicData, updatedUserData);
     })
     .catch((err) => console.log(err));
 };

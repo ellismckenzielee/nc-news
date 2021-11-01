@@ -39,4 +39,25 @@ describe("testing app.js", () => {
       });
     });
   });
+  describe("/api/articles/:article_id", () => {
+    describe("GET", () => {
+      it("status 200: responds with an article object that has specified id", () => {
+        return request(app)
+          .get("/api/articles/1")
+          .expect(200)
+          .then(({ body }) => {
+            const testArticle = {
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              topic: "mitch",
+              author: "butter_bridge",
+              body: "I find this existence challenging",
+              created_at: new Date(1594329060000).toISOString(),
+              votes: 100,
+            };
+            expect(body.article).toEqual(testArticle);
+          });
+      });
+    });
+  });
 });

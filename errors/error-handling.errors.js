@@ -18,3 +18,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
 exports.handle500 = (req, res, next) => {
   res.status(500).send({ msg: "server error" });
 };
+
+exports.handle404 = (req, res, next) => {
+  res.status(404).send({ msg: "Invalid URL" });
+};

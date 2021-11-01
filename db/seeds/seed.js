@@ -1,5 +1,6 @@
 const db = require("../connection");
 const format = require("pg-format");
+const { convertObjectsToArrays } = require("../utils/utils");
 
 const seed = ({ articleData, commentData, topicData, userData }) => {
   return db
@@ -52,6 +53,16 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         created_at DATE NOT NULL
       );`;
       return db.query(createCommentsQuery);
+    })
+    .then(() => {
+      const keyOrder = ["username", "name", "avatar_url"];
+
+      const userDataArray = convertObjectsToArrays(userData, keyOrder);
+      const insertUsersQuery = format(
+        `INSERT INTO users (username, name, avatar_url) VALUES %L`,
+        userDataArray
+      );
+      return db.query(insertUsersQuery);
     })
     .catch((err) => console.log(err));
 };

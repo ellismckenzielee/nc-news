@@ -14,6 +14,13 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
     })
     .then(() => {
       console.log("Tables successfully removed!");
+      const createUsersQuery = `CREATE TABLE users (
+        user_id SERIAL PRIMARY KEY,
+        username VARCHAR(25) NOT NULL,
+        name VARCHAR NOT NULL,
+        avatar_url VARCHAR
+        );`;
+      return db.query(createUsersQuery);
     })
     .catch((err) => console.log(err));
 };

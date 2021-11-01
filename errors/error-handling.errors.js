@@ -9,7 +9,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
       "22P02": { status: 400, msg: "bad request: invalid article name" },
     };
     const customError = errorConverter[err.code];
-    res.status(customError.status).send({ msg: customError.msg });
+    next(customError);
   } else {
     next(err);
   }

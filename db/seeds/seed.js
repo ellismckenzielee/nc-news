@@ -47,7 +47,7 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         comment_id SERIAL PRIMARY KEY,
         body VARCHAR NOT NULL,
         votes INT DEFAULT 0, 
-        author INT REFERENCES users(user_id) NOT NULL,
+        author_id INT REFERENCES users(user_id) NOT NULL,
         article_id INT REFERENCES articles(article_id) NOT NULL,
         created_at DATE NOT NULL
       );`;

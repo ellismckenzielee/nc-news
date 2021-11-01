@@ -30,6 +30,18 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
         );`;
       return db.query(createTopicsQuery);
     })
+    .then(() => {
+      const createArticlesQuery = `CREATE TABLE articles (
+        article_id SERIAL PRIMARY KEY,
+        title VARCHAR NOT NULL,
+        topic INT REFERENCES topics(topic_id) NOT NULL,
+        body TEXT NOT NULL,
+        author_id INT REFERENCES users(user_id) NOT NULL,
+        created_at DATE NOT NULL,
+        votes INT DEFAULT 0
+      );`;
+      return db.query(createArticlesQuery);
+    })
     .catch((err) => console.log(err));
 };
 

@@ -6,7 +6,7 @@ const {
   updateObjectsArray,
 } = require("../utils/utils");
 
-const seed = ({ articleData, commentData, topicData, userData }) => {
+const seed_using_ids = ({ articleData, commentData, topicData, userData }) => {
   return db
     .query("DROP TABLE IF EXISTS comments")
     .then(() => {
@@ -137,4 +137,4 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
     .catch((err) => console.log(err));
 };
 
-module.exports = seed;
+module.exports = seed_using_ids;

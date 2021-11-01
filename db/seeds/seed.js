@@ -1,7 +1,9 @@
 const db = require("../connection");
 const format = require("pg-format");
 const { convertObjectsToArrays } = require("../utils/utils");
-const seed = ({ articleData, commentData, topicData, userData }) => {
+
+const seed = (data) => {
+  const { articleData, commentData, topicData, userData } = data;
   return db
     .query("DROP TABLE IF EXISTS comments")
     .then(() => {
@@ -103,7 +105,6 @@ const seed = ({ articleData, commentData, topicData, userData }) => {
       );
       return db.query(insertCommentsQuery);
     })
-
     .catch((err) => console.log(err));
 };
 

@@ -9,6 +9,13 @@ utils.createReferenceObject = (array, key, value) => {
 utils.convertObjectsToArrays = (array, keyOrder) => {
   /*converts array of objects into an array of arrays, using
     the specified keyOrder parameter to maintain consistenorder*/
+  return array.map((item) => {
+    const valuesArray = [];
+    for (let key of keyOrder) {
+      valuesArray.push(item[key]);
+    }
+    return valuesArray;
+  });
 };
 
 utils.updateObjectsArray = (array, referenceObject, keyToUpdate, newKey) => {

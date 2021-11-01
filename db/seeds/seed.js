@@ -37,7 +37,7 @@ const seed = (data) => {
         topic VARCHAR REFERENCES topics(slug) NOT NULL,
         body TEXT NOT NULL,
         author VARCHAR REFERENCES users(username) NOT NULL,
-        created_at DATE DEFAULT CURRENT_DATE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         votes INT DEFAULT 0
       );`;
       return db.query(createArticlesQuery);
@@ -49,7 +49,7 @@ const seed = (data) => {
         votes INT DEFAULT 0, 
         author VARCHAR REFERENCES users(username) NOT NULL,
         article_id INT REFERENCES articles(article_id) NOT NULL,
-        created_at DATE DEFAULT CURRENT_DATE
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );`;
       return db.query(createCommentsQuery);
     })

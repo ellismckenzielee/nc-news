@@ -42,7 +42,7 @@ const seed_using_ids = ({ articleData, commentData, topicData, userData }) => {
         topic_id INT REFERENCES topics(topic_id) NOT NULL,
         body TEXT NOT NULL,
         author_id INT REFERENCES users(user_id) NOT NULL,
-        created_at DATE NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         votes INT DEFAULT 0
       );`;
       return db.query(createArticlesQuery);
@@ -54,7 +54,7 @@ const seed_using_ids = ({ articleData, commentData, topicData, userData }) => {
         votes INT DEFAULT 0, 
         author_id INT REFERENCES users(user_id) NOT NULL,
         article_id INT REFERENCES articles(article_id) NOT NULL,
-        created_at DATE NOT NULL
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );`;
       return db.query(createCommentsQuery);
     })

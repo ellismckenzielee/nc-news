@@ -59,3 +59,12 @@ utils.handleSortQuery = (sort_by) => {
   }
   return sort_by;
 };
+
+utils.handleOrderQuery = (order) => {
+  if (!order) return "ASC";
+  else if (!["ASC", "DESC"].includes(order)) {
+    return false;
+  } else {
+    return order;
+  }
+};

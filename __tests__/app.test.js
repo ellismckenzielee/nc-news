@@ -198,13 +198,13 @@ describe("testing app.js", () => {
             expect(articles[11]).toEqual(testArticle);
           });
       });
-      it("status: 400, returns message: invalid sort query", () => {
+      it("status: 400, returns message: invalid query when invalid sort provided", () => {
         const sort_by = "allthethings";
         return request(app)
           .get(`/api/articles?sort_by=${sort_by}`)
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe("invalid sort query");
+            expect(body.msg).toBe("invalid query");
           });
       });
       it("status 200: returns ordered articles when order query sent", () => {
@@ -215,6 +215,15 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             const { articles } = body;
             expect(articles).toBeSortedBy("created_at", { descending: true });
+          });
+      });
+      it("status: 400, returns message: invalid query when invalid order provided", () => {
+        const order = "sidewards";
+        return request(app)
+          .get(`/api/articles?order=${order}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
           });
       });
     });

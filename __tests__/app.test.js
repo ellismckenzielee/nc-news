@@ -12,7 +12,7 @@ afterAll(() => db.end());
 describe("testing app.js", () => {
   describe("/api/topics", () => {
     describe("GET", () => {
-      it("status: 200. responds with all topics", () => {
+      it.only("status: 200. responds with all topics", () => {
         return request(app)
           .get("/api/topics")
           .expect(200)
@@ -27,9 +27,7 @@ describe("testing app.js", () => {
             });
           });
       });
-    });
-    describe("error handling:", () => {
-      it("status: 404, responds with invalid URL", () => {
+      it.only("status: 404, responds with invalid URL", () => {
         return request(app)
           .get("/api/topicss")
           .expect(404)

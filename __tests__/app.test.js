@@ -12,7 +12,7 @@ afterAll(() => db.end());
 describe("testing app.js", () => {
   describe("/api/topics", () => {
     describe("GET", () => {
-      it.only("status: 200. responds with all topics", () => {
+      it("status: 200. responds with all topics", () => {
         return request(app)
           .get("/api/topics")
           .expect(200)
@@ -27,7 +27,7 @@ describe("testing app.js", () => {
             });
           });
       });
-      it.only("status: 404, responds with invalid URL", () => {
+      it("status: 404, responds with invalid URL", () => {
         return request(app)
           .get("/api/topicss")
           .expect(404)
@@ -39,7 +39,7 @@ describe("testing app.js", () => {
   });
   describe("/api/articles/:article_id", () => {
     describe("GET", () => {
-      it("status 200: responds with an article object that has specified id", () => {
+      it("status: 200, responds with an article object that has specified id", () => {
         return request(app)
           .get("/api/articles/1")
           .expect(200)
@@ -58,7 +58,7 @@ describe("testing app.js", () => {
       });
       it("status: 400, responds with a message: bad request when invalid ID supplied", () => {
         return request(app)
-          .get("/api/articles/wrongPATH")
+          .get("/api/articles/wrongID")
           .expect(400)
           .then(({ body }) => {
             console.log(body);
@@ -123,6 +123,16 @@ describe("testing app.js", () => {
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it("status: 404, responds with a message: Invalid URL", () => {
+        const votesInc = "badVote";
+        return request(app)
+          .patch("/api/articlees/badId")
+          .send({ votesInc })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
           });
       });
     });

@@ -238,6 +238,15 @@ describe("testing app.js", () => {
             });
           });
       });
+      it("status: 404, returns a message: topic not found, when a valid topic is passed that does not exist", () => {
+        const topic = "squirrels";
+        return request(app)
+          .get(`/api/articles?topic=${topic}`)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("topic not found");
+          });
+      });
     });
   });
 });

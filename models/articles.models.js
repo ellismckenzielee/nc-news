@@ -1,3 +1,4 @@
+const e = require("express");
 const db = require("../db/connection");
 const {
   handleSortQuery,
@@ -57,8 +58,16 @@ exports.selectArticles = (sort_by, order, topicFilter) => {
     return db
       .query(queryString, queryParams)
       .then(({ rows }) => {
-        return rows;
+        return Promise.all([rows, db.query("SELECT slug FROM topics;")]);
       })
-      .catch((err) => console.log(err));
+      .then(([rows, { rows: topicObjects }]) => {
+        if (rows.length > 0) return rows;
+        const topics = topicObjects.map((topic) => topic.slug);
+        if (!topics.includes(topicFilter)) {
+          return Promise.reject({ status: 404, msg: "topic not found" });
+        } else {
+          return rows;
+        }
+      });
   }
 };

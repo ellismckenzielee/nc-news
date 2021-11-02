@@ -257,6 +257,20 @@ describe("testing app.js", () => {
             expect(articles.length).toBe(0);
           });
       });
+      it("status: 200, returns article array when order, sort_by and topic passed as queries", () => {
+        const [order, sort_by, topic] = ["DESC", "title", "mitch"];
+        return request(app)
+          .get(`/api/articles?order=${order}&sort_by=${sort_by}&topic=${topic}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles.length).toBe(11);
+            articles.forEach((article) => {
+              article.topic = topic;
+            });
+            expect(articles).toBeSortedBy("title", { descending: true });
+          });
+      });
     });
   });
 });

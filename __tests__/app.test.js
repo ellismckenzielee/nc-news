@@ -12,7 +12,7 @@ afterAll(() => db.end());
 describe("testing app.js", () => {
   describe("/api/topics", () => {
     describe("GET", () => {
-      it("status: 200. responds with all topics", () => {
+      it("status: 200, responds with all topics", () => {
         return request(app)
           .get("/api/topics")
           .expect(200)
@@ -56,7 +56,7 @@ describe("testing app.js", () => {
             expect(body.article).toEqual(testArticle);
           });
       });
-      it("status: 400, responds with a message: bad request when invalid ID supplied", () => {
+      it("status: 400, responds with a message: 400: bad request", () => {
         return request(app)
           .get("/api/articles/wrongID")
           .expect(400)
@@ -65,7 +65,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it("status: 404, responds with 404 and message Invalid URL if incorrect path specified", () => {
+      it("status: 404, responds with a message: invalid URL", () => {
         return request(app)
           .get("/api/articless/3")
           .expect(404)
@@ -106,7 +106,6 @@ describe("testing app.js", () => {
       });
       it("status: 400, responds with a message: bad request when invalid ID supplied", () => {
         const votesInc = 10;
-
         return request(app)
           .patch("/api/articles/badId")
           .send({ votesInc })
@@ -115,7 +114,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it("status: 400, responds with a message: bad request when passed votesInc is invalid", () => {
+      it("status: 400, responds with a message: bad request when passed invalid votesInc", () => {
         const votesInc = "badVote";
         return request(app)
           .patch("/api/articles/badId")
@@ -125,7 +124,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it("status: 404, responds with a message: Invalid URL", () => {
+      it("status: 404, responds with a message: invalid URL", () => {
         const votesInc = "badVote";
         return request(app)
           .patch("/api/articlees/badId")

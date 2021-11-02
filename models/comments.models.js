@@ -9,7 +9,7 @@ exports.selectComments = (article_id) => {
       [article_id]
     )
     .then(({ rows }) => {
-      console.log(rows);
-      return rows;
+      if (rows.length > 0) return rows;
+      return Promise.reject({ status: 404, msg: "article not found" });
     });
 };

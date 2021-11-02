@@ -247,6 +247,16 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("topic not found");
           });
       });
+      it("status: 200, returns an empty article array when a valid topic that has no associated articles is passed as topic query", () => {
+        const topic = "paper";
+        return request(app)
+          .get(`/api/articles?topic=${topic}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles.length).toBe(0);
+          });
+      });
     });
   });
 });

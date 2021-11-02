@@ -276,6 +276,13 @@ describe("testing app.js", () => {
   describe.only("/api/articles/:article_id/comments", () => {
     describe("GET", () => {
       it("status 200: returns an array of comments", () => {
+        const testComment = {
+          comment_id: expect.any(Number),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+        };
         const articleId = 1;
         return request(app)
           .get(`/api/articles/${articleId}/comments`)
@@ -283,6 +290,9 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             const { comments } = body;
             expect(comments.length).toBe(11);
+            comments.forEach((comment) => {
+              expect(comment).toEqual(testComment);
+            });
           });
       });
     });

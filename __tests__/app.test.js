@@ -160,6 +160,15 @@ describe("testing app.js", () => {
             });
           });
       });
+      it("status: 200, returns (by default) ascending date ordered articles", () => {
+        return request(app)
+          .get("/api/articles")
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles).toBeSortedBy("created_at");
+          });
+      });
     });
   });
 });

@@ -38,3 +38,24 @@ utils.updateObjectsArray = (array, referenceObject, keyToUpdate, newKey) => {
     return updatedObj;
   });
 };
+
+utils.handleSortQuery = (sort_by) => {
+  if (!sort_by) {
+    return "created_at";
+  } else {
+    if (
+      ![
+        "author",
+        "title",
+        "article_id",
+        "topic",
+        "created_at",
+        "votes",
+        "comment_count",
+      ].includes(sort_by)
+    ) {
+      return false;
+    }
+  }
+  return sort_by;
+};

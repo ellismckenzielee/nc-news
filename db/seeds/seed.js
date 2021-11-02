@@ -1,6 +1,6 @@
 const db = require("../connection");
 const format = require("pg-format");
-const { convertObjectsToArrays } = require("../utils/utils");
+const { convertObjectsToArrays } = require("../../utils/utils");
 
 const seed = (data) => {
   const { articleData, commentData, topicData, userData } = data;

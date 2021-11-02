@@ -160,6 +160,14 @@ describe("testing app.js", () => {
             });
           });
       });
+      it("status: 404, returns message: invalid URL if url incorrect", () => {
+        return request(app)
+          .get("/api/articless")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
       it("status: 200, returns (by default) ascending date ordered articles", () => {
         return request(app)
           .get("/api/articles")
@@ -169,7 +177,7 @@ describe("testing app.js", () => {
             expect(articles).toBeSortedBy("created_at");
           });
       });
-      it.only("status: 200, returns sorted array when sort_by query present", () => {
+      it("status: 200, returns sorted array when sort_by query present", () => {
         const sort_by = "comment_count";
         const testArticle = {
           article_id: 1,
@@ -186,7 +194,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            console.log(articles);
             expect(articles).toBeSortedBy("comment_count");
             expect(articles[11]).toEqual(testArticle);
           });

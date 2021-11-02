@@ -34,7 +34,7 @@ exports.selectArticles = (sort_by) => {
   console.log("in selectArticlesController");
   let queryParams = [];
   if (!sort_by) {
-    sort_by = "author";
+    sort_by = "created_at";
   }
   let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id  GROUP BY articles.article_id ORDER BY ${sort_by} ASC `;
 

@@ -136,7 +136,7 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe.only("/api/articles", () => {
+  describe("/api/articles", () => {
     describe("GET", () => {
       it("status: 200, returns with an array of articles", () => {
         const testArticle = {
@@ -238,7 +238,7 @@ describe("testing app.js", () => {
             });
           });
       });
-      it("status: 404, returns a message: topic not found, when a valid topic is passed that does not exist", () => {
+      it("status: 404, returns a message: topic not found when a tehnically valid topic is passed that does not exist", () => {
         const topic = "squirrels";
         return request(app)
           .get(`/api/articles?topic=${topic}`)
@@ -269,6 +269,20 @@ describe("testing app.js", () => {
               article.topic = topic;
             });
             expect(articles).toBeSortedBy("title", { descending: true });
+          });
+      });
+    });
+  });
+  describe.only("/api/articles/:article_id/comments", () => {
+    describe("GET", () => {
+      it("status 200: returns an array of comments", () => {
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments`)
+          .expect(200)
+          .then(({ body }) => {
+            const { comments } = body;
+            expect(comments.length).toBe(11);
           });
       });
     });

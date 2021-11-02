@@ -62,7 +62,7 @@ utils.handleSortQuery = (sort_by) => {
 
 utils.handleOrderQuery = (order) => {
   if (!order) return "ASC";
-  else if (!["ASC", "DESC"].includes(order)) {
+  else if (!["ASC", "DESC"].includes(order.toUpperCase())) {
     return false;
   } else {
     return order;

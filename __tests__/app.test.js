@@ -169,6 +169,17 @@ describe("testing app.js", () => {
             expect(articles).toBeSortedBy("created_at");
           });
       });
+      it.only("status: 200, returns sorted array when sort_by query present", () => {
+        const sort_by = "comment_count";
+        return request(app)
+          .get(`/api/articles?sort_by=${sort_by}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            console.log(articles);
+            expect(articles).toBeSortedBy("comment_count");
+          });
+      });
     });
   });
 });

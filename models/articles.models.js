@@ -30,11 +30,20 @@ exports.updateArticleById = (article_id, votesInc) => {
     });
 };
 
-exports.selectArticles = () => {
+exports.selectArticles = (sort_by) => {
   console.log("in selectArticlesController");
+  let queryParams = [];
+  if (!sort_by) {
+    sort_by = "author";
+  }
+  let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id  GROUP BY articles.article_id ORDER BY ${sort_by} ASC `;
+
+  console.log(queryString);
+  console.log(queryParams);
   return db
-    .query(
-      "SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id  GROUP BY articles.article_id ORDER BY articles.created_at;"
-    )
-    .then(({ rows }) => rows);
+    .query(queryString, [])
+    .then(({ rows }) => {
+      return rows;
+    })
+    .catch((err) => console.log(err));
 };

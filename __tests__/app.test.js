@@ -198,6 +198,15 @@ describe("testing app.js", () => {
             expect(articles[11]).toEqual(testArticle);
           });
       });
+      it.only("status: 400, returns message: invalid sort query", () => {
+        const sort_by = "allthethings";
+        return request(app)
+          .get(`/api/articles?sort_by=${sort_by}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid sort query");
+          });
+      });
     });
   });
 });

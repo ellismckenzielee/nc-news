@@ -36,14 +36,28 @@ exports.selectArticles = (sort_by) => {
   if (!sort_by) {
     sort_by = "created_at";
   }
-  let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id  GROUP BY articles.article_id ORDER BY ${sort_by} ASC `;
+  if (
+    ![
+      "author",
+      "title",
+      "article_id",
+      "topic",
+      "created_at",
+      "votes",
+      "comment_count",
+    ].includes(sort_by)
+  ) {
+    return Promise.reject({ status: 400, msg: "invalid sort query" });
+  } else {
+    let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id  GROUP BY articles.article_id ORDER BY ${sort_by} ASC `;
 
-  console.log(queryString);
-  console.log(queryParams);
-  return db
-    .query(queryString, [])
-    .then(({ rows }) => {
-      return rows;
-    })
-    .catch((err) => console.log(err));
+    console.log(queryString);
+    console.log(queryParams);
+    return db
+      .query(queryString, [])
+      .then(({ rows }) => {
+        return rows;
+      })
+      .catch((err) => console.log(err));
+  }
 };

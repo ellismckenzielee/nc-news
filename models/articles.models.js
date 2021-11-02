@@ -3,7 +3,7 @@ const db = require("../db/connection");
 const {
   handleSortQuery,
   handleOrderQuery,
-  handleTopicFilterQuery,
+  assembleSelectArticlesQuery,
 } = require("../utils/utils");
 
 exports.selectArticleById = (article_id) => {
@@ -44,17 +44,11 @@ exports.selectArticles = (sort_by, order, topicFilter) => {
   if (!(sort_by && order)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
   } else {
-    let queryParams = [];
-    let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
-
-    if (topicFilter) {
-      queryString += ` WHERE articles.topic = $1`;
-      queryParams.push(topicFilter);
-    }
-    queryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order} `;
-
-    console.log(queryString);
-    console.log(queryParams);
+    const [queryString, queryParams] = assembleSelectArticlesQuery(
+      sort_by,
+      order,
+      topicFilter
+    );
     return db
       .query(queryString, queryParams)
       .then(({ rows }) => {

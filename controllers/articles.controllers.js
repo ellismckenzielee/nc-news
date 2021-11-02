@@ -4,7 +4,7 @@ const {
 } = require("../models/articles.models.js");
 
 exports.getArticleById = (req, res, next) => {
-  console.log("in get articles by id controller");
+  console.log("in getArticles by id controller");
   const { article_id } = req.params;
   selectArticleById(article_id)
     .then((article) => {
@@ -16,7 +16,7 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.patchArticleById = (req, res, next) => {
-  console.log("in patchArticleById");
+  console.log("in patchArticleById controller");
   const { article_id } = req.params;
   const { votesInc } = req.body;
   console.log(article_id, votesInc);

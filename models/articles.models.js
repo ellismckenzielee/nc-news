@@ -1,6 +1,7 @@
 const db = require("../db/connection");
 
 exports.selectArticleById = (article_id) => {
+  console.log("in selectArticleById model");
   console.log(article_id);
   return db
     .query("SELECT * FROM articles WHERE article_id = $1", [article_id])
@@ -15,7 +16,7 @@ exports.selectArticleById = (article_id) => {
 };
 
 exports.updateArticleById = (article_id, votesInc) => {
-  console.log("in deleteArticleById");
+  console.log("in deleteArticleById model");
   return db
     .query(
       "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",

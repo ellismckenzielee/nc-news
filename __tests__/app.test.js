@@ -295,6 +295,24 @@ describe("testing app.js", () => {
             });
           });
       });
+      it("status: 404, returns message: invalud URL", () => {
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/commnents`)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
+      it("status 400, returns message: 400 bad request when article_id invalid", () => {
+        const articleId = "fivehunderd";
+        return request(app)
+          .get(`/api/articles/${articleId}/comments`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
     });
   });
 });

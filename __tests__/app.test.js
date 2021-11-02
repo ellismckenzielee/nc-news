@@ -136,4 +136,30 @@ describe("testing app.js", () => {
       });
     });
   });
+  describe.only("/api/articles", () => {
+    describe("GET", () => {
+      it("status: 200, returns with an array of articles", () => {
+        const testArticle = {
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(Number),
+        };
+        return request(app)
+          .get("/api/articles")
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            console.log(articles[0]);
+            expect(articles.length).toBe(12);
+            articles.forEach((article) => {
+              expect(article).toEqual(testArticle);
+            });
+          });
+      });
+    });
+  });
 });

@@ -68,3 +68,8 @@ utils.handleOrderQuery = (order) => {
     return order;
   }
 };
+
+utils.handleTopicFilterQuery = (topicFilter) => {
+  if (!topicFilter) return false;
+  return true;
+};

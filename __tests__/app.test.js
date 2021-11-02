@@ -226,6 +226,18 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
+      it("status: 200, returns array of filtered article objects when topic query provided", () => {
+        const topic = "mitch";
+        return request(app)
+          .get(`/api/articles?topic=${topic}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            articles.forEach((article) => {
+              expect(article.topic).toBe(topic);
+            });
+          });
+      });
     });
   });
 });

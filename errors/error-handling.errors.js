@@ -6,8 +6,12 @@ exports.handleCustomErrors = (err, req, res, next) => {
 exports.handlePSQLErrors = (err, req, res, next) => {
   console.log(err);
   if (err.code) {
+    console.log(err.code);
     const errorConverter = {
-      "22P02": { status: 400, msg: "bad request: invalid article name" },
+      "22P02": {
+        status: 400,
+        msg: "400: bad request",
+      },
     };
     const customError = errorConverter[err.code];
     next(customError);

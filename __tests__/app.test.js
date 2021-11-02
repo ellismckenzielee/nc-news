@@ -64,7 +64,7 @@ describe("testing app.js", () => {
           .expect(400)
           .then(({ body }) => {
             console.log(body);
-            expect(body.msg).toBe("bad request: invalid article name");
+            expect(body.msg).toBe("400: bad request");
           });
       });
       it("status: 404, responds with 404 and message Invalid URL if incorrect path specified", () => {
@@ -114,18 +114,17 @@ describe("testing app.js", () => {
           .send({ votesInc })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe("bad request: invalid article name");
+            expect(body.msg).toBe("400: bad request");
           });
       });
-      it.only("status: 400, responds with a message: bad request when passed votesInc is invalid", () => {
+      it("status: 400, responds with a message: bad request when passed votesInc is invalid", () => {
         const votesInc = "badVote";
-
         return request(app)
           .patch("/api/articles/badId")
           .send({ votesInc })
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe("bad request: invalid vote increment");
+            expect(body.msg).toBe("400: bad request");
           });
       });
     });

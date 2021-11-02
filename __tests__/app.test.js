@@ -207,6 +207,16 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid sort query");
           });
       });
+      it("status 200: returns ordered articles when order query sent", () => {
+        const order = "DESC";
+        return request(app)
+          .get(`/api/articles?order=${order}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles).toBeSortedBy("created_at", { descending: true });
+          });
+      });
     });
   });
 });

@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { handleSortQuery } = require("../utils/utils");
+const { handleSortQuery, handleOrderQuery } = require("../utils/utils");
 
 exports.selectArticleById = (article_id) => {
   console.log("in selectArticleById model");
@@ -31,14 +31,15 @@ exports.updateArticleById = (article_id, votesInc) => {
     });
 };
 
-exports.selectArticles = (sort_by) => {
+exports.selectArticles = (sort_by, order) => {
   console.log("in selectArticlesController");
   let queryParams = [];
   sort_by = handleSortQuery(sort_by);
-  if (!sort_by) {
+  order = handleOrderQuery(order);
+  if (!(sort_by && order)) {
     return Promise.reject({ status: 400, msg: "invalid sort query" });
   } else {
-    let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id  GROUP BY articles.article_id ORDER BY ${sort_by} ASC `;
+    let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles  LEFT JOIN comments ON articles.article_id = comments.article_id  GROUP BY articles.article_id ORDER BY ${sort_by} ${order} `;
 
     console.log(queryString);
     console.log(queryParams);

@@ -171,6 +171,16 @@ describe("testing app.js", () => {
       });
       it.only("status: 200, returns sorted array when sort_by query present", () => {
         const sort_by = "comment_count";
+        const testArticle = {
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          created_at: new Date(1594329060000).toISOString(),
+          votes: 100,
+          comment_count: 11,
+        };
+
         return request(app)
           .get(`/api/articles?sort_by=${sort_by}`)
           .expect(200)
@@ -178,6 +188,7 @@ describe("testing app.js", () => {
             const { articles } = body;
             console.log(articles);
             expect(articles).toBeSortedBy("comment_count");
+            expect(articles[11]).toEqual(testArticle);
           });
       });
     });

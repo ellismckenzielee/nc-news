@@ -434,6 +434,14 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
+      it("status: 400, responds with message: 400: bad request if invalid comment_id type is passed", () => {
+        return request(app)
+          .delete("/api/comments/badcomment")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
     });
   });
 });

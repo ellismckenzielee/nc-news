@@ -25,18 +25,22 @@ exports.selectArticleById = (article_id) => {
 
 exports.updateArticleById = (article_id, inc_votes) => {
   console.log("in updateArticleById model");
-  return db
-    .query(
-      "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",
-      [inc_votes, article_id]
-    )
-    .then(({ rows }) => {
-      if (rows.length > 0) {
-        return rows[0];
-      } else {
-        return Promise.reject({ status: 404, msg: "article not found" });
-      }
-    });
+  if (inc_votes === undefined) {
+    return Promise.reject({ status: 400, msg: "400: bad request" });
+  } else {
+    return db
+      .query(
+        "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",
+        [inc_votes, article_id]
+      )
+      .then(({ rows }) => {
+        if (rows.length > 0) {
+          return rows[0];
+        } else {
+          return Promise.reject({ status: 404, msg: "article not found" });
+        }
+      });
+  }
 };
 
 exports.selectArticles = (sort_by, order, topicFilter) => {

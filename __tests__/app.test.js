@@ -485,7 +485,7 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe.only("/api/users", () => {
+  describe("/api/users", () => {
     describe("GET", () => {
       it("status: 200, responds with an array of user objects", () => {
         const testUser = {
@@ -516,6 +516,26 @@ describe("testing app.js", () => {
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("Invalid URL");
+          });
+      });
+    });
+  });
+  describe.only('/api/users/"username', () => {
+    describe("GET", () => {
+      it("status: 200, responds with a user object", () => {
+        const testUser = {
+          username: expect.any(String),
+          avatar_url: expect.any(String),
+          name: expect.any(String),
+        };
+        const username = "butter_bridge";
+        return request(app)
+          .get(`/api/users/${username}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { user } = body;
+            expect(user).toEqual(testUser);
+            expect(user.username).toBe(username);
           });
       });
     });

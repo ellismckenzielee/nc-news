@@ -94,7 +94,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("PATCH", () => {
+    describe("PATCH", () => {
       it("status: 201, responds with updated article when votes increment sent in the request", () => {
         const inc_votes = 10;
         return request(app)
@@ -462,11 +462,9 @@ describe("testing app.js", () => {
           .get("/api")
           .expect(200)
           .then(({ body }) => {
-            const endpointsJSON = body.endpoints;
-            expect(typeof endpointsJSON).toBe("string");
-            const endpointsObject = JSON.parse(endpointsJSON);
-            expect(typeof endpointsObject).toBe("object");
-            expect(endpointsObject.hasOwnProperty("GET /api"));
+            const endpoints = body.endpoints;
+            expect(typeof endpoints).toBe("object");
+            expect(endpoints.hasOwnProperty("GET /api"));
           });
       });
       it("status: 404, responds with message: invalid URL", () => {

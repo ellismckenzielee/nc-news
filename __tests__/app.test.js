@@ -52,6 +52,7 @@ describe("testing app.js", () => {
               body: "I find this existence challenging",
               created_at: new Date(1594329060000).toISOString(),
               votes: 100,
+              comment_count: 11,
             };
             expect(body.article).toEqual(testArticle);
           });

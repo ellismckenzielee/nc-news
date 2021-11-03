@@ -40,6 +40,8 @@ utils.updateObjectsArray = (array, referenceObject, keyToUpdate, newKey) => {
 };
 
 utils.handleSortQuery = (sort_by) => {
+  /*sets default sort_by behaviour and returns sort_by method.
+  returns false if sort_by is not in a list of accepted sort columns*/
   if (!sort_by) {
     return "created_at";
   } else {
@@ -61,6 +63,8 @@ utils.handleSortQuery = (sort_by) => {
 };
 
 utils.handleOrderQuery = (order) => {
+  /*sets default order and returns order method. 
+  returns false if order not in a list of accepter order methods*/
   if (!order) return "ASC";
   else if (!["ASC", "DESC"].includes(order.toUpperCase())) {
     return false;
@@ -69,13 +73,15 @@ utils.handleOrderQuery = (order) => {
   }
 };
 
-utils.assembleSelectArticlesQuery = (sort_by, order, topicFilter) => {
+utils.assembleSelectArticlesQuery = (sort_by, order, filter) => {
+  /*assembles selectArticlesQuery using sort_by, order and filter queries provided.
+  returns query string and query params in an array which can be de-structured*/
   let queryParams = [];
   let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
 
-  if (topicFilter) {
+  if (filter) {
     queryString += ` WHERE articles.topic = $1`;
-    queryParams.push(topicFilter);
+    queryParams.push(filter);
   }
   queryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order} `;
 

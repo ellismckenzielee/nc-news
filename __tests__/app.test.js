@@ -94,7 +94,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe("PATCH", () => {
+    describe.only("PATCH", () => {
       it("status: 201, responds with updated article when votes increment sent in the request", () => {
         const inc_votes = 10;
         return request(app)

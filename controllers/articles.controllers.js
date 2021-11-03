@@ -21,9 +21,8 @@ exports.getArticleById = (req, res, next) => {
 exports.patchArticleById = (req, res, next) => {
   console.log("in patchArticleById controller");
   const { article_id } = req.params;
-  const { votesInc } = req.body;
-  console.log(article_id, votesInc);
-  updateArticleById(article_id, votesInc)
+  const { inc_votes } = req.body;
+  updateArticleById(article_id, inc_votes)
     .then((article) => {
       res.status(201).send({ article });
     })

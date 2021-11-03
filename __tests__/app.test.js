@@ -85,50 +85,60 @@ describe("testing app.js", () => {
     });
     describe("PATCH", () => {
       it("status: 201, responds with updated article when votes increment sent in the request", () => {
-        const votesInc = 10;
+        const inc_votes = 10;
         return request(app)
           .patch("/api/articles/1")
-          .send({ votesInc })
+          .send({ inc_votes })
           .expect(201)
           .then(({ body }) => {
             expect(body.article.votes).toBe(110);
           });
       });
       it("status 404, responds with message: article not found", () => {
-        const votesInc = 10;
+        const inc_votes = 10;
         return request(app)
           .patch("/api/articles/999")
-          .send({ votesInc })
+          .send({ inc_votes })
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("article not found");
           });
       });
       it("status: 400, responds with a message: bad request when invalid ID supplied", () => {
-        const votesInc = 10;
+        const inc_votes = 10;
         return request(app)
           .patch("/api/articles/badId")
-          .send({ votesInc })
+          .send({ inc_votes })
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it.only("status: 400, responds with a message: bad request when passed invalid votesInc", () => {
-        const votesInc = "badVote";
+      it("status: 400, responds with a message: bad request when passed invalid inc_votes", () => {
+        const inc_votes = "badVote";
         return request(app)
           .patch("/api/articles/badId")
-          .send({ votesInc })
+          .send({ inc_votes })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it("status: 400, responds with a message: bad request when passed vote increment on incorrect key", () => {
+        const incVotes = 10;
+        return request(app)
+          .patch("/api/articles/badId")
+          .send({ incVotes })
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");
           });
       });
       it("status: 404, responds with a message: invalid URL", () => {
-        const votesInc = "badVote";
+        const inc_votes = "badVote";
         return request(app)
           .patch("/api/articlees/badId")
-          .send({ votesInc })
+          .send({ inc_votes })
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("Invalid URL");
@@ -323,7 +333,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("POST", () => {
+    describe("POST", () => {
       it("status: 201, responds with newly created comment", () => {
         const newComment = {
           username: "icellusedkars",

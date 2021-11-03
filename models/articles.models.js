@@ -20,12 +20,12 @@ exports.selectArticleById = (article_id) => {
     });
 };
 
-exports.updateArticleById = (article_id, votesInc) => {
+exports.updateArticleById = (article_id, inc_votes) => {
   console.log("in updateArticleById model");
   return db
     .query(
       "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",
-      [votesInc, article_id]
+      [inc_votes, article_id]
     )
     .then(({ rows }) => {
       if (rows.length > 0) {

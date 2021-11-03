@@ -418,6 +418,14 @@ describe("testing app.js", () => {
       it("status: 204, upon successful deletion", () => {
         return request(app).delete("/api/comments/1").expect(204);
       });
+      it("status: 404, responds with message: comment not found", () => {
+        return request(app)
+          .delete("/api/comments/9999")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("comment not found");
+          });
+      });
     });
   });
 });

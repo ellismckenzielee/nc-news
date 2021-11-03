@@ -9,6 +9,7 @@
 Northcoders News API is a restful API which serves article, comment and topic information to endpoints specified in *https://nc-news-ellis.herokuapp.com/api*. The API stack is a combination of JavaScript/Express and a Postgres DBMS.
 
 ```http
+*example endpoints*
 /api
 /api/articles
 /api/topics
@@ -26,7 +27,7 @@ The installation instructions are are follows:
 **5.** enter **touch .env.development .env.test** to create environment files  
 **6.** open .env.development and write _PGDATABASE=nc-news_  
 **7.** open .env.test and write \_PGDATABASE=nc_news_test  
-**8** enter **npm test** to run test file
+**8** enter **npm test** to run test file or **npm start** to run the server
 
 ## Version Information
 

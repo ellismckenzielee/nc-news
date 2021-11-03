@@ -485,4 +485,23 @@ describe("testing app.js", () => {
       });
     });
   });
+  describe.only("/api/users", () => {
+    describe("GET", () => {
+      it("status: 200, responds with an array of user objects", () => {
+        const testUser = {
+          username: expect.any(String),
+        };
+        return request(app)
+          .get("/api/users")
+          .expect(200)
+          .then(({ body }) => {
+            const { users } = body;
+            expect(users.length).toBe(4);
+            users.forEach((user) => {
+              expect(user).toEqual(testUser);
+            });
+          });
+      });
+    });
+  });
 });

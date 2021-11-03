@@ -82,12 +82,16 @@ exports.selectArticleComments = (article_id) => {
 
 exports.insertArticleComment = (username, body, article_id) => {
   console.log("in insertComment model");
-  return db
-    .query(
-      "INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;",
-      [username, body, article_id]
-    )
-    .then(({ rows }) => {
-      return rows[0];
-    });
+  if (!(username && body && article_id)) {
+    return Promise.reject({ status: 400, msg: "400: bad request" });
+  } else {
+    return db
+      .query(
+        "INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;",
+        [username, body, article_id]
+      )
+      .then(({ rows }) => {
+        return rows[0];
+      });
+  }
 };

@@ -385,7 +385,32 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("username not found");
           });
       });
-      it("status: 400, responds with message: 400: bad request if posted comment does not have username and body", () => {});
+      it("status: 400, responds with message: 400: bad request if posted comment does not have username", () => {
+        const newComment = {
+          body: "this is a comment about an article (1)!",
+        };
+        const articleId = 1;
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .send({ newComment })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it("status: 400, responds with message: 400: bad request if posted comment does not have a body", () => {
+        const newComment = {
+          username: "icellusedkars",
+        };
+        const articleId = 1;
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .send({ newComment })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
     });
   });
 });

@@ -6,7 +6,7 @@ const {
   handlePSQLErrors,
   handle500,
   handle404,
-} = require("./errors/error-handling.errors");
+} = require("./controllers/errors.controllers");
 
 //setup middleware
 app.use(express.json());

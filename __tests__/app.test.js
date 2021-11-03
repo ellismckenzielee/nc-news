@@ -413,7 +413,7 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe.only("/api/comments/:comment_id", () => {
+  describe("/api/comments/:comment_id", () => {
     describe("DELETE", () => {
       it("status: 204, upon successful deletion", () => {
         return request(app).delete("/api/comments/1").expect(204);

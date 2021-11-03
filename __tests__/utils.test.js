@@ -2,7 +2,7 @@ const {
   convertObjectsToArrays,
   createReferenceObject,
   updateObjectsArray,
-} = require("../db/utils/utils");
+} = require("../utils/utils");
 
 describe("testing convertObjectsToArrays function:", () => {
   describe("testing core functionality:", () => {

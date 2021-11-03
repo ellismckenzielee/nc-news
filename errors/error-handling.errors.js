@@ -14,6 +14,10 @@ exports.handlePSQLErrors = (err, req, res, next) => {
         status: 400,
         msg: "400: bad request",
       },
+      23503: {
+        status: 404,
+        msg: "username not found",
+      },
     };
     const customError = errorConverter[err.code];
     console.log("converted PSQL error into custom error");

@@ -114,7 +114,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it("status: 400, responds with a message: bad request when passed invalid votesInc", () => {
+      it.only("status: 400, responds with a message: bad request when passed invalid votesInc", () => {
         const votesInc = "badVote";
         return request(app)
           .patch("/api/articles/badId")
@@ -323,7 +323,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe("POST", () => {
+    describe.only("POST", () => {
       it("status: 201, responds with newly created comment", () => {
         const newComment = {
           username: "icellusedkars",
@@ -347,6 +347,35 @@ describe("testing app.js", () => {
             expect(createdComment).toEqual(testComment);
           });
       });
+      it("status: 404, responds with message: invalid URL", () => {
+        const newComment = {
+          username: "icellusedkars",
+          body: "this is a comment about article 1!",
+        };
+        const articleId = 1;
+        return request(app)
+          .post(`/api/articles/${articleId}/commments`)
+          .send({ newComment })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
+      it("status: 404, responds with message: username not found if username not in DB", () => {
+        const newComment = {
+          username: "Ellis",
+          body: "this is a comment about an article (1)!",
+        };
+        const articleId = 1;
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .send({ newComment })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("username not found");
+          });
+      });
+      it("status: 400, responds with message: 400: bad request if posted comment does not have username and body", () => {});
     });
   });
 });

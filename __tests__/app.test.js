@@ -273,7 +273,7 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe.only("/api/articles/:article_id/comments", () => {
+  describe("/api/articles/:article_id/comments", () => {
     describe("GET", () => {
       it("status 200: returns an array of comments", () => {
         const testComment = {
@@ -320,6 +320,31 @@ describe("testing app.js", () => {
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("article not found");
+          });
+      });
+    });
+    describe.only("POST", () => {
+      it("status: 201, responds with newly created comment", () => {
+        const newComment = {
+          username: "icellusedkars",
+          body: "this is a comment about article 1!",
+        };
+        const articleId = 1;
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .send({ newComment })
+          .expect(201)
+          .then(({ body }) => {
+            const { comment: createdComment } = body;
+            const testComment = {
+              comment_id: expect.any(Number),
+              author: "icellusedkars",
+              body: "this is a comment about article 1!",
+              article_id: 1,
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            };
+            expect(createdComment).toEqual(testComment);
           });
       });
     });

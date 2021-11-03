@@ -426,6 +426,14 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("comment not found");
           });
       });
+      it("status: 404, responds with message: invalid URL", () => {
+        return request(app)
+          .delete("/api/commentss/5")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
     });
   });
 });

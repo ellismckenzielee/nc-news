@@ -458,6 +458,22 @@ describe("testing app.js", () => {
             expect(endpointsObject.hasOwnProperty("GET /api"));
           });
       });
+      it("status: 404, responds with message: invalid URL", () => {
+        return request(app)
+          .get("/api2")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
+      it("status: 405, responds with message: method not allowed invalid method used", () => {
+        return request(app)
+          .patch("/api")
+          .expect(405)
+          .then(({ body }) => {
+            expect(body.msg).toBe("method not allowed");
+          });
+      });
     });
   });
 });

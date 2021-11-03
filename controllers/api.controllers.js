@@ -5,7 +5,3 @@ exports.getEndpoints = (req, res, next) => {
     res.status(200).send({ endpoints });
   });
 };
-
-exports.invalidMethod = (req, res, next) => {
-  res.status(405).send({ msg: "method not allowed" });
-};

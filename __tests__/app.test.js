@@ -36,6 +36,16 @@ describe("testing app.js", () => {
           });
       });
     });
+    describe("INVALID METHODS", () => {
+      it("status: 405, responds with message: method not allowed", () => {
+        return request(app)
+          .delete("/api/topics")
+          .expect(405)
+          .then(({ body }) => {
+            expect(body.msg).toBe("method not allowed");
+          });
+      });
+    });
   });
   describe("/api/articles/:article_id", () => {
     describe("GET", () => {

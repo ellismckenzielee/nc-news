@@ -36,3 +36,7 @@ exports.handle404 = (req, res, next) => {
   console.log("in handle404 error handler");
   res.status(404).send({ msg: "Invalid URL" });
 };
+
+exports.invalidMethod = (req, res, next) => {
+  res.status(405).send({ msg: "method not allowed" });
+};

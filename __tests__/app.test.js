@@ -502,6 +502,14 @@ describe("testing app.js", () => {
             });
           });
       });
+      it("status: 405, returns message: method not allowed when using invalid HTTP verb", () => {
+        return request(app)
+          .post("/api/users")
+          .expect(405)
+          .then(({ body }) => {
+            expect(body.msg).toBe("method not allowed");
+          });
+      });
     });
   });
 });

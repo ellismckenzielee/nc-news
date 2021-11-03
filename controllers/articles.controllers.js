@@ -2,6 +2,8 @@ const {
   selectArticleById,
   updateArticleById,
   selectArticles,
+  insertArticleComment,
+  selectArticleComments,
 } = require("../models/articles.models.js");
 
 exports.getArticleById = (req, res, next) => {
@@ -34,4 +36,23 @@ exports.getArticles = (req, res, next) => {
   selectArticles(sort_by, order, topicFilter)
     .then((articles) => res.status(200).send({ articles }))
     .catch(next);
+};
+
+exports.getArticleComments = (req, res, next) => {
+  const { article_id } = req.params;
+  console.log(req.params);
+  selectArticleComments(article_id)
+    .then((comments) => res.status(200).send({ comments }))
+    .catch(next);
+};
+
+exports.postArticleComment = (req, res, next) => {
+  console.log("in postComment controller");
+  const { newComment } = req.body;
+  const { username, body } = newComment;
+  const { article_id } = req.params;
+  console.log(username, body, article_id);
+  insertArticleComment(username, body, article_id).then((comment) => {
+    res.status(201).send({ comment });
+  });
 };

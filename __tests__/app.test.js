@@ -323,7 +323,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("POST", () => {
+    describe("POST", () => {
       it("status: 201, responds with newly created comment", () => {
         const newComment = {
           username: "icellusedkars",

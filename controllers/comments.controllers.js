@@ -2,6 +2,7 @@ const {
   selectComments,
   insertComment,
 } = require("../models/comments.models.js");
+
 exports.getComments = (req, res, next) => {
   const { article_id } = req.params;
   console.log(req.params);

@@ -23,5 +23,40 @@
         }
       ]
     }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "",
+    "queries": [],
+    "exampleResponse": {
+      "article": {}
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "",
+    "queries": [],
+    "exampleResponse": {
+      "article": {}
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "",
+    "queries": [],
+    "exampleResponse": {
+      "article": {}
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "",
+    "queries": [],
+    "exampleResponse": {
+      "article": {}
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "",
+    "queries": [],
+    "exampleResponse": {
+      "article": {}
+    }
   }
 }

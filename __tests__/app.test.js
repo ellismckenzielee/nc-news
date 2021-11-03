@@ -444,4 +444,20 @@ describe("testing app.js", () => {
       });
     });
   });
+  describe("/api", () => {
+    describe("GET", () => {
+      it("status: 200, responds with a JSON object describing API endpoints", () => {
+        return request(app)
+          .get("/api")
+          .expect(200)
+          .then(({ body }) => {
+            const endpointsJSON = body.endpoints;
+            expect(typeof endpointsJSON).toBe("string");
+            const endpointsObject = JSON.parse(endpointsJSON);
+            expect(typeof endpointsObject).toBe("object");
+            expect(endpointsObject.hasOwnProperty("GET /api"));
+          });
+      });
+    });
+  });
 });

@@ -510,6 +510,14 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("method not allowed");
           });
       });
+      it("status: 404, returns message: invalid URL", () => {
+        return request(app)
+          .get("/api/userss")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
     });
   });
 });

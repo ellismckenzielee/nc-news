@@ -38,7 +38,7 @@ const seed = (data) => {
         body TEXT NOT NULL,
         author VARCHAR REFERENCES users(username) NOT NULL,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        votes INT DEFAULT 0
+        votes INT NOT NULL DEFAULT 0
       );`;
       return db.query(createArticlesQuery);
     })

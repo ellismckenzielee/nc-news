@@ -239,6 +239,15 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("article not found");
           });
       });
+      it("status: 400, returns message: 400: bad request when article_id incorrect type", () => {
+        const article_id = "badarticleid";
+        return request(app)
+          .delete(`/api/articles/${article_id}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
     });
   });
   describe("/api/articles", () => {

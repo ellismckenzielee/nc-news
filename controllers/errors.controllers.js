@@ -12,7 +12,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
       },
       23503: {
         status: 404,
-        msg: "username not found",
+        msg: "resource not found",
       },
       23505: {
         status: 409,

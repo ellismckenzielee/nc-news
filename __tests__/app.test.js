@@ -225,8 +225,8 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("DELETE", () => {
-      it.only("status: 204, on successful deletion", () => {
+    describe("DELETE", () => {
+      it("status: 204, on successful deletion", () => {
         const article_id = 1;
         return request(app).delete(`/api/articles/${article_id}`).expect(204);
       });
@@ -246,6 +246,15 @@ describe("testing app.js", () => {
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it("status: 404, returns message: invalid url", () => {
+        const article_id = 1;
+        return request(app)
+          .delete(`/api/artticles/${article_id}`)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
           });
       });
     });

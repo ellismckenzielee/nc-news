@@ -66,7 +66,7 @@ describe("testing app.js", () => {
       });
     });
     describe("POST", () => {
-      it("status: 201, responds with new post object", () => {
+      it("status: 201, responds with new topic object", () => {
         const slug = "pearl jam";
         const description = "a band";
         const testTopic = { slug, description };
@@ -587,11 +587,11 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it("status: 404, responds with message: resource not found if username not in DB", () => {
+      it.only("status: 404, responds with message: resource not found if username not in DB", () => {
         const username = "ellis";
         const body = "this is a comment about article 1!";
-
         const articleId = 1;
+
         return request(app)
           .post(`/api/articles/${articleId}/comments`)
           .send({ username, body })
@@ -600,7 +600,20 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("resource not found");
           });
       });
-      it("status: 404, responds with message: resource not found", () => {
+      it.only("status: 400, responds with message: 400: bad request if invalid article ID", () => {
+        const username = "icellusedkars";
+        const body = "this is a comment about article 1!";
+        const articleId = "incorrectarticleID";
+
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .send({ username, body })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it("status: 404, responds with message: resource not found for non-present article_id", () => {
         const username = "icellusedkars";
         const body = "this is a comment about article 1!";
         const articleId = 1000;

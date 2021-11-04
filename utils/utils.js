@@ -65,7 +65,7 @@ utils.handleSortQuery = (sort_by) => {
 utils.handleOrderQuery = (order) => {
   /*sets default order and returns order method. 
   returns false if order not in a list of accepter order methods*/
-  if (!order) return "ASC";
+  if (!order) return "DESC";
   else if (!["ASC", "DESC"].includes(order.toUpperCase())) {
     return false;
   } else {

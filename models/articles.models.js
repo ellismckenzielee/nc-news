@@ -25,7 +25,7 @@ exports.selectArticleById = (article_id) => {
 
 exports.updateArticleById = (article_id, inc_votes) => {
   console.log("in updateArticleById model");
-  if (inc_votes === undefined) {
+  if (typeof inc_votes !== "number") {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
     return db

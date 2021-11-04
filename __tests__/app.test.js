@@ -486,6 +486,17 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("comment not found");
           });
       });
+      it("status: 404, responds with message: invalid url", () => {
+        const inc_votes = 10;
+        const comment_id = 1;
+        return request(app)
+          .patch(`/api/commennts/${comment_id}`)
+          .send({ inc_votes })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
     });
   });
   describe("/api", () => {

@@ -528,7 +528,7 @@ describe("testing app.js", () => {
             expect(comment).toEqual(testComment);
           });
       });
-      it.only("status: 201, responds with updated comment object - votes can be decremented", () => {
+      it("status: 201, responds with updated comment object - votes can be decremented", () => {
         const inc_votes = -10;
         const comment_id = 1;
         const testComment = {
@@ -581,8 +581,19 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it.only("status: 400, responds with message: 400: bad request if votes increment stored on incorrect key", () => {
+      it("status: 400, responds with message: 400: bad request if votes increment stored on incorrect key", () => {
         const comment_id = 1;
+        const incVotes = 5;
+        return request(app)
+          .patch(`/api/comments/${comment_id}`)
+          .send({ incVotes })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it("status: 400, responds with message: 400 bad request if the comment_id is the incorrect type", () => {
+        const comment_id = "thecomment";
         const incVotes = 5;
         return request(app)
           .patch(`/api/comments/${comment_id}`)

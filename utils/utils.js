@@ -73,7 +73,7 @@ utils.handleOrderQuery = (order) => {
   }
 };
 
-utils.assembleSelectArticlesQuery = (sort_by, order, filter) => {
+utils.assembleSelectArticlesQuery = (sort_by, order, filter, limit) => {
   /*assembles selectArticlesQuery using sort_by, order and filter queries provided.
   returns query string and query params in an array which can be de-structured*/
   let queryParams = [];
@@ -83,7 +83,15 @@ utils.assembleSelectArticlesQuery = (sort_by, order, filter) => {
     queryString += ` WHERE articles.topic = $1`;
     queryParams.push(filter);
   }
-  queryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order} `;
+  queryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order} LIMIT ${limit}`;
 
   return [queryString, queryParams];
+};
+
+utils.handleLimitQuery = (limit) => {
+  /* creates default limit variable if no limit query 
+  and returns false if limit invalid */
+  if (limit === undefined) return 10;
+  if (limit <= 0) return false;
+  return limit;
 };

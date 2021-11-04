@@ -80,6 +80,18 @@ describe("testing app.js", () => {
             expect(topic).toEqual(testTopic);
           });
       });
+      it("status: 404, responds with message: invalid url", () => {
+        const slug = "pearl jam";
+        const description = "a band";
+        const testTopic = { slug, description };
+        return request(app)
+          .post("/api/topiccs")
+          .send({ slug, description })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toEqual("Invalid URL");
+          });
+      });
     });
     describe("INVALID METHODS", () => {
       it("status: 405, responds with message: method not allowed", () => {

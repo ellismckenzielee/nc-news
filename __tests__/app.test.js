@@ -520,7 +520,7 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe.only('/api/users/"username', () => {
+  describe.only('/api/users/":username', () => {
     describe("GET", () => {
       it("status: 200, responds with a user object", () => {
         const testUser = {

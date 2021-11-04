@@ -98,5 +98,23 @@
     "description": "deletes a comment with specified comment ID",
     "queries": [],
     "exampleResponse": {}
+  },
+  "GET /api/users": {
+    "description": "serves an an array of users",
+    "queries": [],
+    "exampleResponse": {
+      "users": ["butter_bridge", "icedgoblinman"]
+    }
+  },
+  "GET /api/users/:username": {
+    "description": "serves a user object for given username",
+    "queries": [],
+    "exampleResponse": {
+      "user": {
+        "username": "butter_bridge",
+        "name": "jonny",
+        "avatar_url": "http:avatar_url.com/avatar_ul.jpg"
+      }
+    }
   }
 }

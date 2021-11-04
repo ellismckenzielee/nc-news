@@ -226,7 +226,7 @@ describe("testing app.js", () => {
       });
     });
     describe.only("DELETE", () => {
-      it("status: 204, on successful deletion", () => {
+      it.only("status: 204, on successful deletion", () => {
         const article_id = 1;
         return request(app).delete(`/api/articles/${article_id}`).expect(204);
       });

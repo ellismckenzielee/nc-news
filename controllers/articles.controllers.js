@@ -62,8 +62,9 @@ exports.deleteArticleById = (req, res, next) => {
   console.log("inside getArticleById controller");
   const { article_id } = req.params;
   removeArticleById(article_id)
-    .then(() => {
-      res.sendStatus(204);
+    .then((removedCommentCount) => {
+      res.status(204);
+      //.send({ msg: `success: removed ${removedCommentCount} comments` });
     })
     .catch(next);
 };

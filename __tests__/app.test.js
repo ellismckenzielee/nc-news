@@ -594,7 +594,7 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe('/api/users/":username', () => {
+  describe("/api/users/:username", () => {
     describe("GET", () => {
       it("status: 200, responds with a user object", () => {
         const testUser = {
@@ -610,7 +610,6 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             const { user } = body;
             expect(user).toEqual(testUser);
-            expect(user.username).toBe(username);
           });
       });
       it("status: 404, responds with message: user not found", () => {
@@ -623,7 +622,7 @@ describe("testing app.js", () => {
           });
       });
       it("status: 404, responds with message: invalid URL", () => {
-        const username = "nonexistentuser";
+        const username = "butter_bridge";
         return request(app)
           .get(`/api/useers/${username}`)
           .expect(404)

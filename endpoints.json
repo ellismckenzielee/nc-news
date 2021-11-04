@@ -4,14 +4,12 @@
   },
   "GET /api/topics": {
     "description": "serves an array of all topics",
-    "queries": [],
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
   "GET /api/articles/:article_id": {
     "description": "serves an article object with specified ID",
-    "queries": [],
     "exampleResponse": {
       "article": {
         "author": "butter_bridge",
@@ -27,7 +25,6 @@
   },
   "PATCH /api/articles/:article_id": {
     "description": "updates vote count of article at given ID and serves this article",
-    "queries": [],
     "exampleResponse": {
       "article": {
         "author": "butter_bridge",
@@ -69,7 +66,6 @@
   },
   "GET /api/articles/:article_id/comments": {
     "description": "serves an array of comments for a given article_id",
-    "queries": [],
     "exampleResponse": {
       "comments": {
         "comment_id": "1",
@@ -82,7 +78,6 @@
   },
   "POST /api/articles/:article_id/comments": {
     "description": "posts a new comment linked to specified article_id and serves created comment",
-    "queries": [],
     "exampleResponse": {
       "comment": {
         "comment_id": "5",
@@ -95,13 +90,10 @@
     }
   },
   "DELETE /api/comments/:comment_id": {
-    "description": "deletes a comment with specified comment ID",
-    "queries": [],
-    "exampleResponse": {}
+    "description": "deletes a comment with specified comment ID"
   },
   "PATCH /api/comments/:comment_id": {
     "description": "updates vote count on comment with specified ID and serves this comment",
-    "queries": [],
     "exampleResponse": {
       "comment_id": "1",
       "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
@@ -113,14 +105,12 @@
   },
   "GET /api/users": {
     "description": "serves an an array of users",
-    "queries": [],
     "exampleResponse": {
       "users": ["butter_bridge", "icedgoblinman"]
     }
   },
   "GET /api/users/:username": {
     "description": "serves a user object for given username",
-    "queries": [],
     "exampleResponse": {
       "user": {
         "username": "butter_bridge",

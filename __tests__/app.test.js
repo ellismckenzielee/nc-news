@@ -92,6 +92,17 @@ describe("testing app.js", () => {
             expect(body.msg).toEqual("Invalid URL");
           });
       });
+      it("status: 409, responds with message: topic already exists", () => {
+        const slug = "mitch";
+        const description = "a band";
+        return request(app)
+          .post("/api/topics")
+          .send({ slug, description })
+          .expect(409)
+          .then(({ body }) => {
+            expect(body.msg).toBe("topic already exists");
+          });
+      });
     });
     describe("INVALID METHODS", () => {
       it("status: 405, responds with message: method not allowed", () => {

@@ -538,6 +538,15 @@ describe("testing app.js", () => {
             expect(user.username).toBe(username);
           });
       });
+      it("status: 404, responds with message: user not found", () => {
+        const username = "nonexistentuser";
+        return request(app)
+          .get(`/api/users/${username}`)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("user not found");
+          });
+      });
     });
   });
 });

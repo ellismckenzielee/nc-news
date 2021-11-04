@@ -65,6 +65,22 @@ describe("testing app.js", () => {
           });
       });
     });
+    describe.only("POST", () => {
+      it("status: 201, responds with new post object", () => {
+        const slug = "pearl jam";
+        const description = "a band";
+        const testTopic = { slug, description };
+        return request(app)
+          .post("/api/topics")
+          .send({ slug, description })
+          .expect(201)
+          .then(({ body }) => {
+            const { topic } = body;
+            console.log(topic);
+            expect(topic).toEqual(testTopic);
+          });
+      });
+    });
     describe("INVALID METHODS", () => {
       it("status: 405, responds with message: method not allowed", () => {
         return request(app)

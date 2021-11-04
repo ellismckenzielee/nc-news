@@ -25,8 +25,8 @@ The installation instructions are are follows:
 **3.** enter **npm install** to install dependencies  
 **4.** enter **npm run setup-dbs** to setup nc-news database  
 **5.** enter **touch .env.development .env.test** to create environment files  
-**6.** open .env.development and write _PGDATABASE=nc-news_  
-**7.** open .env.test and write \_PGDATABASE=nc_news_test  
+**6.** open .env.development and write _PGDATABASE=nc_news_  
+**7.** open .env.test and write PGDATABASE=nc_news_test  
 **8** enter **npm test** to run test file or **npm start** to run the server
 
 ## Version Information

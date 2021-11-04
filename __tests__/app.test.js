@@ -544,11 +544,22 @@ describe("testing app.js", () => {
       });
       it("status: 400, responds with message: 400: bad request if posted comment does not have a body", () => {
         const username = "icellusedkars";
-
         const articleId = 1;
         return request(app)
           .post(`/api/articles/${articleId}/comments`)
           .send({ username })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it.only("status: 400, responds with message: 400: bad request if posted comment has body key but no content", () => {
+        const username = "icellusedkars";
+        const body = "";
+        const articleId = 1;
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .send({ username, body })
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");

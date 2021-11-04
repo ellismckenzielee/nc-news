@@ -208,7 +208,7 @@ describe("testing app.js", () => {
   });
   describe("/api/articles", () => {
     describe("GET", () => {
-      it("status: 200, returns with an array of articles", () => {
+      it("status: 200, responds with an array of articles", () => {
         const testArticle = {
           author: expect.any(String),
           title: expect.any(String),
@@ -223,7 +223,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            console.log(articles[0]);
             expect(articles.length).toBe(12);
             articles.forEach((article) => {
               expect(article).toEqual(testArticle);
@@ -247,7 +246,7 @@ describe("testing app.js", () => {
             expect(articles).toBeSortedBy("created_at");
           });
       });
-      it("status: 200, returns sorted array when sort_by query present", () => {
+      it("status: 200, returns sorted  of objects when sort_by query present", () => {
         const sort_by = "comment_count";
         const testArticle = {
           article_id: 1,
@@ -268,7 +267,7 @@ describe("testing app.js", () => {
             expect(articles[11]).toEqual(testArticle);
           });
       });
-      it("status: 400, returns message: invalid query when invalid sort provided", () => {
+      it("status: 400, returns message: invalid query when invalid sort query provided", () => {
         const sort_by = "allthethings";
         return request(app)
           .get(`/api/articles?sort_by=${sort_by}`)
@@ -277,7 +276,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it("status 200: returns ordered articles when order query sent", () => {
+      it("status: 200: returns ordered articles when order query sent", () => {
         const order = "DESC";
         return request(app)
           .get(`/api/articles?order=${order}`)
@@ -306,6 +305,7 @@ describe("testing app.js", () => {
             articles.forEach((article) => {
               expect(article.topic).toBe(topic);
             });
+            expect(articles.length).toBe(11);
           });
       });
       it("status: 404, returns a message: topic not found when a tehnically valid topic is passed that does not exist", () => {

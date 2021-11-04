@@ -107,3 +107,14 @@ exports.insertArticleComment = (username, body, article_id) => {
       });
   }
 };
+
+exports.removeArticleById = (article_id) => {
+  console.log(" in removeArticleById model");
+  return db
+    .query("DELETE FROM articles WHERE article_id = $1;", [article_id])
+    .then(({ rowCount }) => {
+      return rowCount
+        ? rowCount
+        : Promise.reject({ status: 404, msg: "article not found" });
+    });
+};

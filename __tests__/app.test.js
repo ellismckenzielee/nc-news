@@ -225,6 +225,21 @@ describe("testing app.js", () => {
           });
       });
     });
+    describe.only("DELETE", () => {
+      it("status: 204, on successful deletion", () => {
+        const article_id = 1;
+        return request(app).delete(`/api/articles/${article_id}`).expect(204);
+      });
+      it("status: 404, returns message: article not found when article_id correct type", () => {
+        const article_id = 999;
+        return request(app)
+          .delete(`/api/articles/${article_id}`)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("article not found");
+          });
+      });
+    });
   });
   describe("/api/articles", () => {
     describe("GET", () => {
@@ -553,7 +568,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it.only("status: 400, responds with message: 400: bad request if posted comment has body key but no content", () => {
+      it("status: 400, responds with message: 400: bad request if posted comment has body key but no content", () => {
         const username = "icellusedkars";
         const body = "";
         const articleId = 1;

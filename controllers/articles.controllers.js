@@ -4,6 +4,7 @@ const {
   selectArticles,
   insertArticleComment,
   selectArticleComments,
+  removeArticleById,
 } = require("../models/articles.models.js");
 
 exports.getArticleById = (req, res, next) => {
@@ -53,6 +54,16 @@ exports.postArticleComment = (req, res, next) => {
   insertArticleComment(username, body, article_id)
     .then((comment) => {
       res.status(201).send({ comment });
+    })
+    .catch(next);
+};
+
+exports.deleteArticleById = (req, res, next) => {
+  console.log("inside getArticleById controller");
+  const { article_id } = req.params;
+  removeArticleById(article_id)
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(next);
 };

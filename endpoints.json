@@ -99,6 +99,18 @@
     "queries": [],
     "exampleResponse": {}
   },
+  "PATCH /api/comments/:comment_id": {
+    "description": "updates vote count on comment with specified ID and serves this comment",
+    "queries": [],
+    "exampleResponse": {
+      "comment_id": "1",
+      "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+      "votes": "26",
+      "author": "butter_bridge",
+      "article_id": "9",
+      "created_at": "2022-07-09T21:11:00.000Z"
+    }
+  },
   "GET /api/users": {
     "description": "serves an an array of users",
     "queries": [],

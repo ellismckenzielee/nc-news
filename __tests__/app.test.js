@@ -541,13 +541,23 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it("status: 404, returns message: article not found when technically valid article_id is given", () => {
+      it("status: 404, returns message: article not found when technically valid article_id is given which does not yet exist", () => {
         const articleId = 4000;
         return request(app)
           .get(`/api/articles/${articleId}/comments`)
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("article not found");
+          });
+      });
+      it.only("status: 200, returns empty array when a valid article ID is given that has no comments", () => {
+        const articleId = 2;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments`)
+          .expect(200)
+          .then(({ body }) => {
+            const { comments } = body;
+            expect(comments.length).toBe(0);
           });
       });
     });

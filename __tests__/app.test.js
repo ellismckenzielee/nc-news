@@ -128,20 +128,32 @@ describe("testing app.js", () => {
       });
     });
     describe("PATCH", () => {
-      it("status: 201, responds with updated article when votes increment sent in the request", () => {
+      it("status: 201, responds with updated article object when inc_votes sent in the request body", () => {
         const inc_votes = 10;
+        const article_id = 1;
+        const testArticle = {
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          body: "I find this existence challenging",
+          author: "butter_bridge",
+          created_at: "2020-07-09T21:11:00.000Z",
+          votes: 110,
+        };
         return request(app)
-          .patch("/api/articles/1")
+          .patch(`/api/articles/${article_id}`)
           .send({ inc_votes })
           .expect(201)
           .then(({ body }) => {
-            expect(body.article.votes).toBe(110);
+            const { article } = body;
+            expect(article).toEqual(testArticle);
           });
       });
-      it("status 404, responds with message: article not found", () => {
+      it("status: 404, responds with message: article not found", () => {
         const inc_votes = 10;
+        const article_id = 999;
         return request(app)
-          .patch("/api/articles/999")
+          .patch(`/api/articles/${article_id}`)
           .send({ inc_votes })
           .expect(404)
           .then(({ body }) => {
@@ -150,8 +162,9 @@ describe("testing app.js", () => {
       });
       it("status: 400, responds with a message: bad request when invalid ID supplied", () => {
         const inc_votes = 10;
+        const article_id = "badID";
         return request(app)
-          .patch("/api/articles/badId")
+          .patch(`/api/articles/${article_id}`)
           .send({ inc_votes })
           .expect(400)
           .then(({ body }) => {
@@ -160,8 +173,9 @@ describe("testing app.js", () => {
       });
       it("status: 400, responds with a message: bad request when passed invalid inc_votes", () => {
         const inc_votes = "badVote";
+        const article_id = 1;
         return request(app)
-          .patch("/api/articles/badId")
+          .patch(`/api/articles/${article_id}`)
           .send({ inc_votes })
           .expect(400)
           .then(({ body }) => {
@@ -170,8 +184,9 @@ describe("testing app.js", () => {
       });
       it("status: 400, responds with a message: bad request when passed vote increment on incorrect key", () => {
         const incVotes = 10;
+        const article_id = 1;
         return request(app)
-          .patch("/api/articles/badId")
+          .patch(`/api/articles/${article_id}`)
           .send({ incVotes })
           .expect(400)
           .then(({ body }) => {
@@ -179,9 +194,10 @@ describe("testing app.js", () => {
           });
       });
       it("status: 404, responds with a message: invalid URL", () => {
-        const inc_votes = "badVote";
+        const inc_votes = 10;
+        const article_id = 1;
         return request(app)
-          .patch("/api/articlees/badId")
+          .patch(`/api/articless/${article_id}`)
           .send({ inc_votes })
           .expect(404)
           .then(({ body }) => {

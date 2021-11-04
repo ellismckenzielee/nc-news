@@ -31,8 +31,8 @@ exports.patchArticleById = (req, res, next) => {
 
 exports.getArticles = (req, res, next) => {
   console.log("in getArticles controller");
-  const { sort_by, order, topic: topicFilter, limit } = req.query;
-  selectArticles(sort_by, order, topicFilter, limit)
+  const { sort_by, order, topic: topicFilter, limit, p } = req.query;
+  selectArticles(sort_by, order, topicFilter, limit, p)
     .then((articles) => res.status(200).send({ articles }))
     .catch(next);
 };

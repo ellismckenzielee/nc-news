@@ -5,6 +5,7 @@ const {
   handleOrderQuery,
   assembleSelectArticlesQuery,
   handleLimitQuery,
+  handlePaginationOffset,
 } = require("../utils/utils");
 
 exports.selectArticleById = (article_id) => {
@@ -44,11 +45,12 @@ exports.updateArticleById = (article_id, inc_votes) => {
   }
 };
 
-exports.selectArticles = (sort_by, order, topicFilter, limit) => {
+exports.selectArticles = (sort_by, order, topicFilter, limit, p) => {
   console.log("in selectArticlesController");
   sort_by = handleSortQuery(sort_by);
   order = handleOrderQuery(order);
   limit = handleLimitQuery(limit);
+  p = handlePaginationOffset(p);
   if (!(sort_by && order && limit)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
   } else {
@@ -56,7 +58,8 @@ exports.selectArticles = (sort_by, order, topicFilter, limit) => {
       sort_by,
       order,
       topicFilter,
-      limit
+      limit,
+      p
     );
     return db
       .query(queryString, queryParams)

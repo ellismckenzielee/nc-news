@@ -110,32 +110,13 @@ exports.insertArticleComment = (username, body, article_id) => {
 
 exports.removeArticleById = (article_id) => {
   console.log(" in removeArticleById model");
+
   return db
-    .query("SELECT COUNT(*) FROM comments;")
-    .then(({ rows }) => {
-      const count = parseInt(rows[0].count);
-      console.log(count);
-      return Promise.all([count]);
-    })
-    .then(([count]) => {
-      return Promise.all([
-        count,
-        db.query("DELETE FROM articles WHERE article_id = $1;", [article_id]),
-      ]);
-    })
-    .then(([count, { rowCount }]) => {
-      return Promise.all([
-        count,
-        rowCount
-          ? rowCount
-          : Promise.reject({ status: 404, msg: "article not found" }),
-      ]);
-    })
-    .then(([count]) => {
-      return Promise.all([count, db.query("SELECT COUNT(*) FROM comments;")]);
-    })
-    .then(([beforeCount, { rows }]) => {
-      const afterCount = parseInt(rows[0].count);
-      return beforeCount - afterCount;
+    .query("DELETE FROM articles WHERE article_id = $1;", [article_id])
+    .then(({ rowCount }) => {
+      console.log(rowCount);
+      return rowCount
+        ? rowCount
+        : Promise.reject({ status: 404, msg: "article not found" });
     });
 };

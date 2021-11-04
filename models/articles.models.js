@@ -27,7 +27,7 @@ exports.selectArticleById = (article_id) => {
 
 exports.updateArticleById = (article_id, inc_votes) => {
   console.log("in updateArticleById model");
-  if (typeof inc_votes !== "number") {
+  if (isNaN(inc_votes)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
     return db

@@ -13,7 +13,8 @@ exports.removeComment = (comment_id) => {
 
 exports.updateComment = (comment_id, inc_votes) => {
   console.log("in updateComment model");
-  if (typeof inc_votes !== "number")
+  console.log(typeof inc_votes);
+  if (isNaN(inc_votes))
     return Promise.reject({ status: 400, msg: "400: bad request" });
   return db
     .query(

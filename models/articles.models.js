@@ -81,16 +81,20 @@ exports.selectArticleComments = (article_id) => {
       [article_id]
     )
     .then(({ rows }) => {
-      if (rows.length > 0) return rows;
-      else {
-        return db.query("SELECT * FROM articles WHERE article_id = $1;", [
-          article_id,
-        ]);
-      }
+      return Promise.all([
+        rows,
+        db.query("SELECT * FROM articles WHERE article_id = $1;", [article_id]),
+      ]);
     })
-    .then(({ rows }) => {
-      if (rows.length) return [];
-      return Promise.reject({ status: 404, msg: "article not found" });
+    .then(([comments, { rows: articles }]) => {
+      if (comments.length) return comments;
+      else {
+        if (articles.length) {
+          return comments;
+        } else {
+          return Promise.reject({ status: 404, msg: "article not found" });
+        }
+      }
     });
 };
 

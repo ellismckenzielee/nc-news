@@ -550,7 +550,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("article not found");
           });
       });
-      it.only("status: 200, returns empty array when a valid article ID is given that has no comments", () => {
+      it("status: 200, returns empty array when a valid article ID is given that has no comments", () => {
         const articleId = 2;
         return request(app)
           .get(`/api/articles/${articleId}/comments`)
@@ -597,7 +597,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it.only("status: 404, responds with message: resource not found if username not in DB", () => {
+      it("status: 404, responds with message: resource not found if username not in DB", () => {
         const username = "ellis";
         const body = "this is a comment about article 1!";
         const articleId = 1;
@@ -610,7 +610,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("resource not found");
           });
       });
-      it.only("status: 400, responds with message: 400: bad request if invalid article ID", () => {
+      it("status: 400, responds with message: 400: bad request if invalid article ID", () => {
         const username = "icellusedkars";
         const body = "this is a comment about article 1!";
         const articleId = "incorrectarticleID";

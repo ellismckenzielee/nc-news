@@ -394,7 +394,7 @@ describe("testing app.js", () => {
       });
     });
     describe("POST", () => {
-      it("status: 201, responds with newly created comment", () => {
+      it("status: 201, responds with newly created comment object", () => {
         const newComment = {
           username: "icellusedkars",
           body: "this is a comment about article 1!",
@@ -405,7 +405,7 @@ describe("testing app.js", () => {
           .send({ newComment })
           .expect(201)
           .then(({ body }) => {
-            const { comment: createdComment } = body;
+            const { comment } = body;
             const testComment = {
               comment_id: expect.any(Number),
               author: "icellusedkars",
@@ -414,7 +414,7 @@ describe("testing app.js", () => {
               created_at: expect.any(String),
               votes: expect.any(Number),
             };
-            expect(createdComment).toEqual(testComment);
+            expect(comment).toEqual(testComment);
           });
       });
       it("status: 404, responds with message: invalid URL", () => {
@@ -434,7 +434,7 @@ describe("testing app.js", () => {
       it("status: 404, responds with message: username not found if username not in DB", () => {
         const newComment = {
           username: "Ellis",
-          body: "this is a comment about an article (1)!",
+          body: "this is a comment about an article 1!",
         };
         const articleId = 1;
         return request(app)
@@ -474,29 +474,33 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/comments/:comment_id", () => {
-    describe("DELETE", () => {
+    describe.only("DELETE", () => {
       it("status: 204, upon successful deletion", () => {
-        return request(app).delete("/api/comments/1").expect(204);
+        const comment_id = 1;
+        return request(app).delete(`/api/comments/${comment_id}`).expect(204);
       });
       it("status: 404, responds with message: comment not found", () => {
+        const comment_id = 999;
         return request(app)
-          .delete("/api/comments/9999")
+          .delete(`/api/comments/${comment_id}`)
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("comment not found");
           });
       });
       it("status: 404, responds with message: invalid URL", () => {
+        const comment_id = 1;
         return request(app)
-          .delete("/api/commentss/5")
+          .delete(`/api/commentss/${comment_id}`)
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
       it("status: 400, responds with message: 400: bad request if invalid comment_id type is passed", () => {
+        const comment_id = "badcommentID";
         return request(app)
-          .delete("/api/comments/badcomment")
+          .delete(`/api/comments/${comment_id}`)
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");

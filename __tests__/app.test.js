@@ -227,7 +227,7 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/articles", () => {
-    describe.only("GET", () => {
+    describe("GET", () => {
       it("status: 200, responds with an array of articles", () => {
         const testArticle = {
           author: expect.any(String),
@@ -483,14 +483,13 @@ describe("testing app.js", () => {
     });
     describe("POST", () => {
       it("status: 201, responds with newly created comment object", () => {
-        const newComment = {
-          username: "icellusedkars",
-          body: "this is a comment about article 1!",
-        };
+        const username = "icellusedkars";
+        const body = "this is a comment about article 1!";
+
         const articleId = 1;
         return request(app)
           .post(`/api/articles/${articleId}/comments`)
-          .send({ newComment })
+          .send({ username, body })
           .expect(201)
           .then(({ body }) => {
             const { comment } = body;
@@ -506,54 +505,50 @@ describe("testing app.js", () => {
           });
       });
       it("status: 404, responds with message: invalid URL", () => {
-        const newComment = {
-          username: "icellusedkars",
-          body: "this is a comment about article 1!",
-        };
+        const username = "icellusedkars";
+        const body = "this is a comment about article 1!";
+
         const articleId = 1;
         return request(app)
           .post(`/api/articles/${articleId}/commments`)
-          .send({ newComment })
+          .send({ username, body })
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
       it("status: 404, responds with message: username not found if username not in DB", () => {
-        const newComment = {
-          username: "Ellis",
-          body: "this is a comment about an article 1!",
-        };
+        const username = "ellis";
+        const body = "this is a comment about article 1!";
+
         const articleId = 1;
         return request(app)
           .post(`/api/articles/${articleId}/comments`)
-          .send({ newComment })
+          .send({ username, body })
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("username not found");
           });
       });
       it("status: 400, responds with message: 400: bad request if posted comment does not have username", () => {
-        const newComment = {
-          body: "this is a comment about an article (1)!",
-        };
+        const body = "this is a comment about article 1!";
+
         const articleId = 1;
         return request(app)
           .post(`/api/articles/${articleId}/comments`)
-          .send({ newComment })
+          .send({ body })
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");
           });
       });
       it("status: 400, responds with message: 400: bad request if posted comment does not have a body", () => {
-        const newComment = {
-          username: "icellusedkars",
-        };
+        const username = "icellusedkars";
+
         const articleId = 1;
         return request(app)
           .post(`/api/articles/${articleId}/comments`)
-          .send({ newComment })
+          .send({ username })
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");

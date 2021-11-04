@@ -475,6 +475,17 @@ describe("testing app.js", () => {
             expect(comment).toEqual(testComment);
           });
       });
+      it("status: 404, responds with message: comment not found for technically correct comment_id", () => {
+        const comment_id = 9090;
+        const inc_votes = 100;
+        return request(app)
+          .patch(`/api/comments/${comment_id}`)
+          .send({ inc_votes })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("comment not found");
+          });
+      });
     });
   });
   describe("/api", () => {

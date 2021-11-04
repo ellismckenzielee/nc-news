@@ -524,9 +524,10 @@ describe("testing app.js", () => {
     describe("GET", () => {
       it("status: 200, responds with a user object", () => {
         const testUser = {
-          username: expect.any(String),
-          avatar_url: expect.any(String),
-          name: expect.any(String),
+          username: "butter_bridge",
+          avatar_url:
+            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+          name: "jonny",
         };
         const username = "butter_bridge";
         return request(app)

@@ -17,7 +17,8 @@ describe("testing app.js", () => {
           .get("/api/topics")
           .expect(200)
           .then(({ body }) => {
-            expect(body.topics.length).toBe(3);
+            const topics = body.topics;
+            expect(topics.length).toBe(3);
             const testTopic = {
               description: expect.any(String),
               slug: expect.any(String),
@@ -454,7 +455,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("PATCH", () => {
+    describe("PATCH", () => {
       it("status: 201, responds with updated comment object", () => {
         const inc_votes = 10;
         const comment_id = 1;

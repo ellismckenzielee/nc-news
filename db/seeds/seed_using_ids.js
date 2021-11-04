@@ -18,7 +18,6 @@ const seed_using_ids = ({ articleData, commentData, topicData, userData }) => {
       return Promise.all([removeTopics, removeUsers]);
     })
     .then(() => {
-      console.log("Tables successfully removed!");
       const createUsersQuery = `CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
         username VARCHAR(25) NOT NULL,
@@ -131,7 +130,6 @@ const seed_using_ids = ({ articleData, commentData, topicData, userData }) => {
         `INSERT INTO comments (body, votes, author_id, article_id, created_at) VALUES %L;`,
         commentDataArray
       );
-      console.log(commentDataUpdatedUsers[0]);
       return db.query(insertCommentsQuery);
     })
     .catch((err) => console.log(err));

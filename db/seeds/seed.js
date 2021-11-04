@@ -15,7 +15,6 @@ const seed = (data) => {
       return Promise.all([removeTopics, removeUsers]);
     })
     .then(() => {
-      console.log("Tables successfully removed!");
       const createUsersQuery = `CREATE TABLE users (
         username VARCHAR PRIMARY KEY,
         name VARCHAR NOT NULL,

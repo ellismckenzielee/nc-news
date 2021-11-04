@@ -9,8 +9,6 @@ const {
 } = require("../utils/utils");
 
 exports.selectArticleById = (article_id) => {
-  console.log("in selectArticleById model");
-  console.log(article_id);
   return db
     .query(
       "SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.body, articles.created_at, articles.votes, COUNT(comments.comment_id)::integer AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id WHERE articles.article_id = $1 GROUP BY articles.article_id",
@@ -26,7 +24,6 @@ exports.selectArticleById = (article_id) => {
 };
 
 exports.updateArticleById = (article_id, inc_votes) => {
-  console.log("in updateArticleById model");
   if (isNaN(inc_votes)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
@@ -46,7 +43,6 @@ exports.updateArticleById = (article_id, inc_votes) => {
 };
 
 exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
-  console.log("in selectArticlesController");
   sort_by = handleSortQuery(sort_by);
   order = handleOrderQuery(order);
   limit = handleLimitQuery(limit);
@@ -79,8 +75,6 @@ exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
 };
 
 exports.selectArticleComments = (article_id) => {
-  console.log("inside selectComments model");
-  console.log(article_id);
   return db
     .query(
       "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1",
@@ -93,7 +87,6 @@ exports.selectArticleComments = (article_id) => {
 };
 
 exports.insertArticleComment = (username, body, article_id) => {
-  console.log("in insertComment model");
   if (!(username && body && article_id)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
@@ -109,12 +102,9 @@ exports.insertArticleComment = (username, body, article_id) => {
 };
 
 exports.removeArticleById = (article_id) => {
-  console.log(" in removeArticleById model");
-
   return db
     .query("DELETE FROM articles WHERE article_id = $1;", [article_id])
     .then(({ rowCount }) => {
-      console.log(rowCount);
       return rowCount
         ? rowCount
         : Promise.reject({ status: 404, msg: "article not found" });

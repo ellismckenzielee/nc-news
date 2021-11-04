@@ -8,7 +8,6 @@ const {
 } = require("../models/articles.models.js");
 
 exports.getArticleById = (req, res, next) => {
-  console.log("in getArticles by id controller");
   const { article_id } = req.params;
   selectArticleById(article_id)
     .then((article) => {
@@ -20,7 +19,6 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.patchArticleById = (req, res, next) => {
-  console.log("in patchArticleById controller");
   const { article_id } = req.params;
   const { inc_votes } = req.body;
   updateArticleById(article_id, inc_votes)
@@ -31,7 +29,6 @@ exports.patchArticleById = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  console.log("in getArticles controller");
   const { sort_by, order, topic: topicFilter, limit, p } = req.query;
   selectArticles({ sort_by, order, topicFilter, limit, p })
     .then((articles) => res.status(200).send({ articles }))
@@ -40,17 +37,14 @@ exports.getArticles = (req, res, next) => {
 
 exports.getArticleComments = (req, res, next) => {
   const { article_id } = req.params;
-  console.log(req.params);
   selectArticleComments(article_id)
     .then((comments) => res.status(200).send({ comments }))
     .catch(next);
 };
 
 exports.postArticleComment = (req, res, next) => {
-  console.log("in postComment controller");
   const { username, body } = req.body;
   const { article_id } = req.params;
-  console.log(username, body, article_id);
   insertArticleComment(username, body, article_id)
     .then((comment) => {
       res.status(201).send({ comment });
@@ -59,7 +53,6 @@ exports.postArticleComment = (req, res, next) => {
 };
 
 exports.deleteArticleById = (req, res, next) => {
-  console.log("inside getArticleById controller");
   const { article_id } = req.params;
   removeArticleById(article_id)
     .then(() => {

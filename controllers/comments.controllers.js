@@ -1,7 +1,6 @@
 const { removeComment, updateComment } = require("../models/comments.models");
 
 exports.deleteComment = (req, res, next) => {
-  console.log("in deleteComment controller");
   const { comment_id } = req.params;
   removeComment(comment_id)
     .then(() => {
@@ -11,10 +10,8 @@ exports.deleteComment = (req, res, next) => {
 };
 
 exports.patchComment = (req, res, next) => {
-  console.log("in patchComment controller");
   const { comment_id } = req.params;
   const { inc_votes } = req.body;
-  console.log(comment_id, inc_votes);
   updateComment(comment_id, inc_votes)
     .then((comment) => {
       res.status(200).send({ comment });

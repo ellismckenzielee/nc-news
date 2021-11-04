@@ -113,7 +113,6 @@ describe("testing app.js", () => {
           .get(`/api/articless/${article_id}`)
           .expect(404)
           .then(({ body }) => {
-            console.log(body);
             expect(body.msg).toBe("Invalid URL");
           });
       });
@@ -389,7 +388,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            console.log(articles);
             expect(articles.length).toBe(limit);
           });
       });

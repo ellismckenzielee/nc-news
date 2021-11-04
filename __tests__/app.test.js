@@ -374,7 +374,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it("status 400, returns message: 400 bad request when article_id invalid", () => {
+      it("status: 400, returns message: 400 bad request when article_id invalid", () => {
         const articleId = "fivehunderd";
         return request(app)
           .get(`/api/articles/${articleId}/comments`)

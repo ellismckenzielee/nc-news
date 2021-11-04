@@ -45,7 +45,7 @@ exports.updateArticleById = (article_id, inc_votes) => {
   }
 };
 
-exports.selectArticles = (sort_by, order, topicFilter, limit, p) => {
+exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
   console.log("in selectArticlesController");
   sort_by = handleSortQuery(sort_by);
   order = handleOrderQuery(order);
@@ -69,7 +69,7 @@ exports.selectArticles = (sort_by, order, topicFilter, limit, p) => {
       .then(([rows, { rows: topicObjects }]) => {
         if (rows.length > 0) return rows;
         const topics = topicObjects.map((topic) => topic.slug);
-        if (!topics.includes(topicFilter)) {
+        if (!topics.includes(topicFilter) && topicFilter) {
           return Promise.reject({ status: 404, msg: "topic not found" });
         } else {
           return rows;

@@ -65,7 +65,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("POST", () => {
+    describe("POST", () => {
       it("status: 201, responds with new post object", () => {
         const slug = "pearl jam";
         const description = "a band";
@@ -587,7 +587,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it("status: 404, responds with message: username not found if username not in DB", () => {
+      it("status: 404, responds with message: resource not found if username not in DB", () => {
         const username = "ellis";
         const body = "this is a comment about article 1!";
 
@@ -597,7 +597,19 @@ describe("testing app.js", () => {
           .send({ username, body })
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("username not found");
+            expect(body.msg).toBe("resource not found");
+          });
+      });
+      it("status: 404, responds with message: resource not found", () => {
+        const username = "icellusedkars";
+        const body = "this is a comment about article 1!";
+        const articleId = 1000;
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .send({ username, body })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found");
           });
       });
       it("status: 400, responds with message: 400: bad request if posted comment does not have username", () => {

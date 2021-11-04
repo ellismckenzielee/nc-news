@@ -508,13 +508,33 @@ describe("testing app.js", () => {
       });
     });
     describe("PATCH", () => {
-      it("status: 201, responds with updated comment object", () => {
+      it("status: 201, responds with updated comment object - votes can be incremented", () => {
         const inc_votes = 10;
         const comment_id = 1;
         const testComment = {
           comment_id: 1,
           body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
           votes: 26,
+          author: "butter_bridge",
+          article_id: 9,
+          created_at: expect.any(String),
+        };
+        return request(app)
+          .patch(`/api/comments/${comment_id}`)
+          .send({ inc_votes })
+          .expect(201)
+          .then(({ body }) => {
+            const { comment } = body;
+            expect(comment).toEqual(testComment);
+          });
+      });
+      it.only("status: 201, responds with updated comment object - votes can be decremented", () => {
+        const inc_votes = -10;
+        const comment_id = 1;
+        const testComment = {
+          comment_id: 1,
+          body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+          votes: 6,
           author: "butter_bridge",
           article_id: 9,
           created_at: expect.any(String),

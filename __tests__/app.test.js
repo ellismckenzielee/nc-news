@@ -374,7 +374,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it.only("status 200: returns offset paginated articles when limit and offset (p) specified", () => {
+      it("status 200: returns offset paginated articles when limit and offset (p) specified", () => {
         const limit = 5;
         const p = 1;
         const sort_by = "title";
@@ -390,6 +390,21 @@ describe("testing app.js", () => {
             expect(articles[0].title).toBe(
               "Seven inspirational thought leaders from Manchester UK"
             );
+          });
+      });
+      it.only("status 200: returns empty array when p value too high", () => {
+        const limit = 5;
+        const p = 100;
+        const sort_by = "title";
+        const order = "DESC";
+        return request(app)
+          .get(
+            `/api/articles?limit=${limit}&p=${p}&sort_by=${sort_by}&order=${order}`
+          )
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles.length).toBe(0);
           });
       });
     });

@@ -8,7 +8,7 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe("testing app.js", () => {
-  describe.only("/api", () => {
+  describe("/api", () => {
     describe("GET", () => {
       it("status: 200, responds with a JSON object describing API endpoints", () => {
         return request(app)
@@ -79,8 +79,9 @@ describe("testing app.js", () => {
   describe("/api/articles/:article_id", () => {
     describe("GET", () => {
       it("status: 200, responds with an article object that has specified id", () => {
+        const article_id = 1;
         return request(app)
-          .get("/api/articles/1")
+          .get(`/api/articles/${article_id}`)
           .expect(200)
           .then(({ body }) => {
             const testArticle = {
@@ -93,21 +94,23 @@ describe("testing app.js", () => {
               votes: 100,
               comment_count: 11,
             };
-            expect(body.article).toEqual(testArticle);
+            const { article } = body;
+            expect(article).toEqual(testArticle);
           });
       });
       it("status: 400, responds with a message: 400: bad request", () => {
+        const article_id = "wrongID";
         return request(app)
-          .get("/api/articles/wrongID")
+          .get(`/api/articles/${article_id}`)
           .expect(400)
           .then(({ body }) => {
-            console.log(body);
             expect(body.msg).toBe("400: bad request");
           });
       });
       it("status: 404, responds with a message: invalid URL", () => {
+        const article_id = 3;
         return request(app)
-          .get("/api/articless/3")
+          .get(`/api/articless/${article_id}`)
           .expect(404)
           .then(({ body }) => {
             console.log(body);
@@ -115,8 +118,9 @@ describe("testing app.js", () => {
           });
       });
       it("status: 404, responds with a message: article not found when request is technically correct", () => {
+        const article_id = 1000;
         return request(app)
-          .get("/api/articles/1000")
+          .get(`/api/articles/${article_id}`)
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("article not found");

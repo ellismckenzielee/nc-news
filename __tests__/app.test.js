@@ -547,6 +547,15 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("user not found");
           });
       });
+      it("status: 404, responds with message: invalid URL", () => {
+        const username = "nonexistentuser";
+        return request(app)
+          .get(`/api/useers/${username}`)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
     });
   });
 });

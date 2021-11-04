@@ -47,8 +47,7 @@ exports.getArticleComments = (req, res, next) => {
 
 exports.postArticleComment = (req, res, next) => {
   console.log("in postComment controller");
-  const { newComment } = req.body;
-  const { username, body } = newComment;
+  const { username, body } = req.body;
   const { article_id } = req.params;
   console.log(username, body, article_id);
   insertArticleComment(username, body, article_id)

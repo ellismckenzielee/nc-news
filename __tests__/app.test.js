@@ -347,8 +347,26 @@ describe("testing app.js", () => {
             expect(articles.length).toBeLessThan(11);
           });
       });
-      it("status: 400, returns message: 400: bad request when limit value is <= 0", () => {
+      it("status: 400, returns message: invalid query when limit value is <= 0", () => {
         const limit = -1;
+        return request(app)
+          .get(`/api/articles?limit=${limit}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
+      it("status: 400, returns message invalid query if limit value is NaN", () => {
+        const limit = "tenthousand";
+        return request(app)
+          .get(`/api/articles?limit=${limit}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
+      it("status: 400, returns message invalid query if limit value is >100", () => {
+        const limit = 105;
         return request(app)
           .get(`/api/articles?limit=${limit}`)
           .expect(400)

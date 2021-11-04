@@ -92,6 +92,7 @@ utils.handleLimitQuery = (limit) => {
   /* creates default limit variable if no limit query 
   and returns false if limit invalid */
   if (limit === undefined) return 10;
-  if (limit <= 0) return false;
+
+  if (limit <= 0 || isNaN(limit) || limit > 100) return false;
   return limit;
 };

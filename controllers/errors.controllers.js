@@ -14,6 +14,10 @@ exports.handlePSQLErrors = (err, req, res, next) => {
         status: 404,
         msg: "username not found",
       },
+      23505: {
+        status: 409,
+        msg: "topic already exists",
+      },
     };
     const customError = errorConverter[err.code];
     next(customError);

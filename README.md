@@ -60,5 +60,3 @@ npm test
 
 - node: v14.17.6
 - postgres: v14
-
-## Additional Information

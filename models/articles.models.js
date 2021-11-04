@@ -4,6 +4,7 @@ const {
   handleSortQuery,
   handleOrderQuery,
   assembleSelectArticlesQuery,
+  handleLimitQuery,
 } = require("../utils/utils");
 
 exports.selectArticleById = (article_id) => {
@@ -43,18 +44,19 @@ exports.updateArticleById = (article_id, inc_votes) => {
   }
 };
 
-exports.selectArticles = (sort_by, order, topicFilter) => {
+exports.selectArticles = (sort_by, order, topicFilter, limit) => {
   console.log("in selectArticlesController");
   sort_by = handleSortQuery(sort_by);
   order = handleOrderQuery(order);
-
-  if (!(sort_by && order)) {
+  limit = handleLimitQuery(limit);
+  if (!(sort_by && order && limit)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
   } else {
     const [queryString, queryParams] = assembleSelectArticlesQuery(
       sort_by,
       order,
-      topicFilter
+      topicFilter,
+      limit
     );
     return db
       .query(queryString, queryParams)

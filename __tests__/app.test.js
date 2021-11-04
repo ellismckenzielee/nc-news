@@ -223,7 +223,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            expect(articles.length).toBe(12);
             articles.forEach((article) => {
               expect(article).toEqual(testArticle);
             });
@@ -248,23 +247,12 @@ describe("testing app.js", () => {
       });
       it("status: 200, returns sorted  of objects when sort_by query present", () => {
         const sort_by = "comment_count";
-        const testArticle = {
-          article_id: 1,
-          title: "Living in the shadow of a great man",
-          topic: "mitch",
-          author: "butter_bridge",
-          created_at: new Date(1594329060000).toISOString(),
-          votes: 100,
-          comment_count: 11,
-        };
-
         return request(app)
           .get(`/api/articles?sort_by=${sort_by}`)
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
             expect(articles).toBeSortedBy("comment_count");
-            expect(articles[11]).toEqual(testArticle);
           });
       });
       it("status: 400, returns message: invalid query when invalid sort query provided", () => {
@@ -305,7 +293,6 @@ describe("testing app.js", () => {
             articles.forEach((article) => {
               expect(article.topic).toBe(topic);
             });
-            expect(articles.length).toBe(11);
           });
       });
       it("status: 404, returns a message: topic not found when a tehnically valid topic is passed that does not exist", () => {
@@ -334,11 +321,39 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            expect(articles.length).toBe(11);
             articles.forEach((article) => {
               article.topic = topic;
             });
             expect(articles).toBeSortedBy("title", { descending: true });
+          });
+      });
+      it("status: 200, returns <= limit articles when a limit query is sent", () => {
+        const limit = 5;
+        return request(app)
+          .get(`/api/articles?limit=${limit}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            console.log(articles);
+            expect(articles.length).toBe(limit);
+          });
+      });
+      it("status: 200, returns <= 10 articles when a limit query is not present", () => {
+        return request(app)
+          .get("/api/articles")
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles.length).toBeLessThan(11);
+          });
+      });
+      it("status: 400, returns message: 400: bad request when limit value is <= 0", () => {
+        const limit = -1;
+        return request(app)
+          .get(`/api/articles?limit=${limit}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
           });
       });
     });

@@ -128,7 +128,7 @@ describe("testing app.js", () => {
       });
     });
     describe("PATCH", () => {
-      it("status: 201, responds with updated article object when inc_votes sent in the request body", () => {
+      it("status: 200, responds with updated article object when inc_votes sent in the request body", () => {
         const inc_votes = 10;
         const article_id = 1;
         const testArticle = {
@@ -143,7 +143,7 @@ describe("testing app.js", () => {
         return request(app)
           .patch(`/api/articles/${article_id}`)
           .send({ inc_votes })
-          .expect(201)
+          .expect(200)
           .then(({ body }) => {
             const { article } = body;
             expect(article).toEqual(testArticle);
@@ -204,10 +204,30 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
+      it.skip("status: 200, responds with article if request body is empty", () => {
+        const article_id = 1;
+        const testArticle = {
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          body: "I find this existence challenging",
+          author: "butter_bridge",
+          created_at: "2020-07-09T21:11:00.000Z",
+          votes: 100,
+        };
+        return request(app)
+          .patch(`/api/articles/${article_id}`)
+          .send({})
+          .expect(200)
+          .then(({ body }) => {
+            const { article } = body;
+            expect(article).toEqual(testArticle);
+          });
+      });
     });
   });
   describe("/api/articles", () => {
-    describe("GET", () => {
+    describe.only("GET", () => {
       it("status: 200, responds with an array of articles", () => {
         const testArticle = {
           author: expect.any(String),
@@ -236,13 +256,13 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it("status: 200, returns (by default) ascending date ordered articles", () => {
+      it("status: 200, returns (by default) descending date ordered articles", () => {
         return request(app)
           .get("/api/articles")
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            expect(articles).toBeSortedBy("created_at");
+            expect(articles).toBeSortedBy("created_at", { descending: true });
           });
       });
       it("status: 200, returns sorted  of objects when sort_by query present", () => {
@@ -252,7 +272,9 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            expect(articles).toBeSortedBy("comment_count");
+            expect(articles).toBeSortedBy("comment_count", {
+              descending: true,
+            });
           });
       });
       it("status: 400, returns message: invalid query when invalid sort query provided", () => {
@@ -392,7 +414,7 @@ describe("testing app.js", () => {
             );
           });
       });
-      it.only("status 200: returns empty array when p value too high", () => {
+      it("status 200: returns empty array when p value too high", () => {
         const limit = 5;
         const p = 100;
         const sort_by = "title";
@@ -574,7 +596,7 @@ describe("testing app.js", () => {
       });
     });
     describe("PATCH", () => {
-      it("status: 201, responds with updated comment object - votes can be incremented", () => {
+      it("status: 200, responds with updated comment object - votes can be incremented", () => {
         const inc_votes = 10;
         const comment_id = 1;
         const testComment = {
@@ -588,13 +610,13 @@ describe("testing app.js", () => {
         return request(app)
           .patch(`/api/comments/${comment_id}`)
           .send({ inc_votes })
-          .expect(201)
+          .expect(200)
           .then(({ body }) => {
             const { comment } = body;
             expect(comment).toEqual(testComment);
           });
       });
-      it("status: 201, responds with updated comment object - votes can be decremented", () => {
+      it("status: 200, responds with updated comment object - votes can be decremented", () => {
         const inc_votes = -10;
         const comment_id = 1;
         const testComment = {
@@ -608,7 +630,7 @@ describe("testing app.js", () => {
         return request(app)
           .patch(`/api/comments/${comment_id}`)
           .send({ inc_votes })
-          .expect(201)
+          .expect(200)
           .then(({ body }) => {
             const { comment } = body;
             expect(comment).toEqual(testComment);

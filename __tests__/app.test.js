@@ -498,8 +498,8 @@ describe("testing app.js", () => {
           });
       });
       it("status: 400, responds with message: 400: bad request if comment_id is invalid type", () => {
-        const comment_id = "comment!";
-        const inc_votes = 100;
+        const comment_id = 1;
+        const inc_votes = "add100";
         return request(app)
           .patch(`/api/comments/${comment_id}`)
           .send({ inc_votes })

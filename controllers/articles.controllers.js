@@ -64,7 +64,6 @@ exports.deleteArticleById = (req, res, next) => {
   removeArticleById(article_id)
     .then(() => {
       res.sendStatus(204);
-      //.send({ msg: `success: removed ${removedCommentCount} comments` });
     })
     .catch(next);
 };

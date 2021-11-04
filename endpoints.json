@@ -23,6 +23,9 @@
       }
     }
   },
+  "DELETE /api/articles/:article_id": {
+    "description": "removes article with specified ID from DB"
+  },
   "PATCH /api/articles/:article_id": {
     "description": "updates vote count of article at given ID and serves this article",
     "exampleResponse": {

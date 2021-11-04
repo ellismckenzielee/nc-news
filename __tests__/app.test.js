@@ -474,7 +474,7 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/comments/:comment_id", () => {
-    describe.only("DELETE", () => {
+    describe("DELETE", () => {
       it("status: 204, upon successful deletion", () => {
         const comment_id = 1;
         return request(app).delete(`/api/comments/${comment_id}`).expect(204);
@@ -550,12 +550,23 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it("status: 400, responds with message: 400: bad request if comment_id is invalid type", () => {
+      it("status: 400, responds with message: 400: bad request if inc_votes is invalid type", () => {
         const comment_id = 1;
         const inc_votes = "add100";
         return request(app)
           .patch(`/api/comments/${comment_id}`)
           .send({ inc_votes })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it.only("status: 400, responds with message: 400: bad request if votes increment stored on incorrect key", () => {
+        const comment_id = 1;
+        const incVotes = 5;
+        return request(app)
+          .patch(`/api/comments/${comment_id}`)
+          .send({ incVotes })
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("400: bad request");

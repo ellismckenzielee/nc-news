@@ -10,3 +10,15 @@ exports.removeComment = (comment_id) => {
         : Promise.reject({ status: 404, msg: "comment not found" });
     });
 };
+
+exports.updateComment = (comment_id, inc_votes) => {
+  console.log("in updateComment model");
+  return db
+    .query(
+      "UPDATE comments SET votes = votes + $1 WHERE comment_id = $2 RETURNING *;",
+      [inc_votes, comment_id]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+};

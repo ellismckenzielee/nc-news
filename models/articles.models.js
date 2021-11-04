@@ -87,7 +87,7 @@ exports.selectArticleComments = (article_id) => {
 };
 
 exports.insertArticleComment = (username, body, article_id) => {
-  if (!(username && body && article_id)) {
+  if (!(username && body && article_id) || isNaN(article_id)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
     return db

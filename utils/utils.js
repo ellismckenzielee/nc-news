@@ -76,7 +76,6 @@ utils.handleOrderQuery = (order) => {
 utils.assembleSelectArticlesQuery = (sort_by, order, filter, limit, p) => {
   /*assembles selectArticlesQuery using sort_by, order and filter queries provided.
   returns query string and query params in an array which can be de-structured*/
-  console.log(sort_by, order, filter, limit, p);
   const pagination = p * limit;
   let queryParams = [];
   let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
@@ -86,7 +85,6 @@ utils.assembleSelectArticlesQuery = (sort_by, order, filter, limit, p) => {
     queryParams.push(filter);
   }
   queryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order} LIMIT ${limit} OFFSET ${pagination}`;
-  console.log(queryString);
   return [queryString, queryParams];
 };
 

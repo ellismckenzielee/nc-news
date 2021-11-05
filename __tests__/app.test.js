@@ -906,7 +906,17 @@ describe("testing app.js", () => {
             expect(comments[0]).toEqual(testComment);
           });
       });
-      it("status: 200, returns an empty array when p too high", () => {});
+      it.only("status: 200, returns an empty array when p too high", () => {
+        const p = 100;
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments?p=${p}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { comments } = body;
+            expect(comments.length).toBe(0);
+          });
+      });
     });
     describe("POST", () => {
       it("status: 201, responds with newly created comment object", () => {

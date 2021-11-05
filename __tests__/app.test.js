@@ -835,7 +835,7 @@ describe("testing app.js", () => {
             expect(comments.length).toBeLessThan(limit + 1);
           });
       });
-      it.only("status: 400, returns a message: invalid query if limit <= 0", () => {
+      it("status: 400, returns a message: invalid query if limit <= 0", () => {
         const limit = -1;
         const articleId = 1;
         return request(app)
@@ -845,7 +845,16 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it("status: 400, returns a message: invalid query if limit >= 0", () => {});
+      it.only("status: 400, returns a message: invalid query if limit > 100", () => {
+        const limit = 105;
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments?limit=${limit}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
       it("status: 400, returns a message: invalid query if limit is incorrect type", () => {});
       it("status: 200, returns an array of comments of length 10 (default), when no limit provided", () => {
         const articleId = 1;
@@ -857,7 +866,7 @@ describe("testing app.js", () => {
             expect(comments.length).toBeLessThan(11);
           });
       });
-      it.only("status: 200, returns an array of comments offset by limit*p when p query added", () => {
+      it("status: 200, returns an array of comments offset by limit*p when p query added", () => {
         const p = 1;
         const articleId = 1;
         return request(app)

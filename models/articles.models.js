@@ -73,11 +73,13 @@ exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
   }
 };
 
-exports.selectArticleComments = (article_id) => {
+exports.selectArticleComments = (article_id, limit) => {
+  limit = handleLimitQuery(limit);
+
   return db
     .query(
-      "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1",
-      [article_id]
+      "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1 LIMIT $2",
+      [article_id, limit]
     )
     .then(({ rows }) => {
       return Promise.all([

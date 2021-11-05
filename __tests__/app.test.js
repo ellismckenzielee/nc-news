@@ -704,7 +704,25 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("resource not found");
           });
       });
-      it("status: 404, responds with message: resource not found if topic does not exist", () => {});
+      it.only("status: 404, responds with message: resource not found if topic does not exist", () => {
+        const author = "butter_bridge";
+        const title = "a new story";
+        const body = "the best story that ever was.";
+        const topic = "bose";
+        const newArticle = {
+          author,
+          title,
+          body,
+          topic,
+        };
+        return request(app)
+          .post("/api/articles")
+          .send(newArticle)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found");
+          });
+      });
       it("status: 400, responds with message: 400: bad request if body is empty string", () => {});
       it("status: 400, responds with message: 400: bad request if title is empty string", () => {});
     });

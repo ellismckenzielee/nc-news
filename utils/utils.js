@@ -100,5 +100,6 @@ utils.handleLimitQuery = (limit) => {
 utils.handlePaginationOffset = (p) => {
   /*creates a default pagination variable if no query.*/
   if (!p) return 0;
+  if (isNaN(p)) return false;
   return p;
 };

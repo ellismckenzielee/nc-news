@@ -79,12 +79,12 @@ exports.selectArticleComments = (article_id, limit, p) => {
   p = handlePaginationOffset(p);
   console.log("LIMIT", limit, p);
   const pagination = limit * p;
-  if (!(limit && p)) {
+  if (!(limit && p !== false)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
   }
   return db
     .query(
-      "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1 LIMIT $2 OFFSET $3;",
+      "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1 ORDER BY created_at DESC LIMIT $2 OFFSET $3;",
       [article_id, limit, pagination]
     )
     .then(({ rows }) => {

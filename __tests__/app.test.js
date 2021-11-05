@@ -541,8 +541,22 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
+      it.only("status: 200, responds with array of articles that have a total_count property", () => {
+        const limit = 5;
+        const p = 1;
+        return request(app)
+          .get(`/api/articles?limit=${limit}&p=${p}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles.length > 0).toBe(true);
+            articles.forEach((article) => {
+              expect(article.total_count).toBe(expect.any(Number));
+            });
+          });
+      });
     });
-    describe.only("POST", () => {
+    describe("POST", () => {
       it("status: 201, responds with newly created article", () => {
         const author = "butter_bridge";
         const title = "a new story";
@@ -599,6 +613,14 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
+      it("status: 400, responds with message: 400 bad request if author missing from req.body", () => {});
+      it("status: 400, responds with message: 400 bad request if title missing from req.body", () => {});
+      it("status: 400, responds with message: 400 bad request if body missing from req.body", () => {});
+      it("status: 400, responds with message: 400 bad request if topic missing from req.body", () => {});
+      it("status: 404, responds with message: resource not found if author does not exist", () => {});
+      it("status: 404, responds with message: resource not found if topic does not exist", () => {});
+      it("status: 400, responds with message: 400: bad request if body is empty string", () => {});
+      it("status: 400, responds with message: 400: bad request if title is empty string", () => {});
     });
   });
   describe("/api/articles/:article_id/comments", () => {
@@ -660,6 +682,15 @@ describe("testing app.js", () => {
             expect(comments.length).toBe(0);
           });
       });
+      it("status: 200, returns an array of comments when limit query is provided", () => {});
+      it("status: 400, returns a message: invalid query if limit <= 0", () => {});
+      it("status: 400, returns a message: invalid query if limit >= 0", () => {});
+      it("status: 400, returns a message: invalid query if limit is incorrect type", () => {});
+      it("status: 200, returns an array of comments of length 10 (default), when no limit provided", () => {});
+      it("status: 200, returns an array of comments offset by limit*p when p query added", () => {});
+      it("status: 400, returns a message: invalid query if p is Nan", () => {});
+      it("status: 200, returns an array of comments with no offset when p <= 0", () => {});
+      it("status: 200, returns an empty array when p too high", () => {});
     });
     describe("POST", () => {
       it("status: 201, responds with newly created comment object", () => {

@@ -73,13 +73,19 @@ exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
   }
 };
 
-exports.selectArticleComments = (article_id, limit) => {
+exports.selectArticleComments = (article_id, limit, p) => {
+  console.log("in article onctorlee");
   limit = handleLimitQuery(limit);
-
+  p = handlePaginationOffset(p);
+  console.log("LIMIT", limit, p);
+  const pagination = limit * p;
+  if (!(limit && p)) {
+    return Promise.reject({ status: 400, msg: "invalid query" });
+  }
   return db
     .query(
-      "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1 LIMIT $2",
-      [article_id, limit]
+      "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1 LIMIT $2 OFFSET $3;",
+      [article_id, limit, pagination]
     )
     .then(({ rows }) => {
       return Promise.all([

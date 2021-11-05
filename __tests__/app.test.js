@@ -329,6 +329,7 @@ describe("testing app.js", () => {
           created_at: expect.any(String),
           votes: expect.any(Number),
           comment_count: expect.any(Number),
+          total_count: expect.any(Number),
         };
         return request(app)
           .get("/api/articles")
@@ -541,7 +542,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it.only("status: 200, responds with array of articles that have a total_count property", () => {
+      it("status: 200, responds with array of articles that have a total_count property", () => {
         const limit = 5;
         const p = 1;
         return request(app)
@@ -551,7 +552,7 @@ describe("testing app.js", () => {
             const { articles } = body;
             expect(articles.length > 0).toBe(true);
             articles.forEach((article) => {
-              expect(article.total_count).toBe(expect.any(Number));
+              expect(article.total_count).toEqual(expect.any(Number));
             });
           });
       });

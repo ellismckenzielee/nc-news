@@ -572,6 +572,33 @@ describe("testing app.js", () => {
             expect(article).toEqual(testArticle);
           });
       });
+      it("status: 404 responds with invalid url", () => {
+        const author = "butter_bridge";
+        const title = "a new story";
+        const body = "the best story that ever was.";
+        const topic = "mitch";
+        const newArticle = {
+          author,
+          title,
+          body,
+          topic,
+        };
+        const testArticle = {
+          ...newArticle,
+          article_id: expect.any(Number),
+          votes: 0,
+          created_at: expect.any(String),
+          comment_count: 0,
+        };
+
+        return request(app)
+          .post("/api/articless")
+          .send(newArticle)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid URL");
+          });
+      });
     });
   });
   describe("/api/articles/:article_id/comments", () => {

@@ -838,7 +838,16 @@ describe("testing app.js", () => {
       it("status: 400, returns a message: invalid query if limit <= 0", () => {});
       it("status: 400, returns a message: invalid query if limit >= 0", () => {});
       it("status: 400, returns a message: invalid query if limit is incorrect type", () => {});
-      it("status: 200, returns an array of comments of length 10 (default), when no limit provided", () => {});
+      it.only("status: 200, returns an array of comments of length 10 (default), when no limit provided", () => {
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments`)
+          .expect(200)
+          .then(({ body }) => {
+            const { comments } = body;
+            expect(comments.length).toBeLessThan(11);
+          });
+      });
       it("status: 200, returns an array of comments offset by limit*p when p query added", () => {});
       it("status: 400, returns a message: invalid query if p is Nan", () => {});
       it("status: 200, returns an array of comments with no offset when p <= 0", () => {});

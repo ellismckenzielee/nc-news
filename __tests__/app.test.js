@@ -499,7 +499,7 @@ describe("testing app.js", () => {
             expect(articles.length).toBe(2);
           });
       });
-      it("status 200: returns offset paginated articles when limit, offset (p), sort_by and order specified", () => {
+      it("status: 200: returns offset paginated articles when limit, offset (p), sort_by and order specified", () => {
         const limit = 5;
         const p = 1;
         const sort_by = "title";
@@ -517,7 +517,7 @@ describe("testing app.js", () => {
             );
           });
       });
-      it("status 200: returns empty array when p value too high", () => {
+      it("status: 200: returns empty array when p value too high", () => {
         const limit = 5;
         const p = 100;
         const sort_by = "title";
@@ -614,7 +614,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it.only("status: 400, responds with message: 400 bad request if author missing from req.body", () => {
+      it("status: 400, responds with message: 400 bad request if author missing from req.body", () => {
         const title = "a new story";
         const body = "the best story that ever was.";
         const topic = "mitch";
@@ -631,7 +631,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it.only("status: 400, responds with message: 400 bad request if title missing from req.body", () => {
+      it("status: 400, responds with message: 400 bad request if title missing from req.body", () => {
         const author = "butter_bridge";
         const body = "the best story that ever was.";
         const topic = "mitch";
@@ -649,7 +649,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it.only("status: 400, responds with message: 400 bad request if body missing from req.body", () => {
+      it("status: 400, responds with message: 400 bad request if body missing from req.body", () => {
         const author = "butter_bridge";
         const title = "a new story";
         const topic = "mitch";
@@ -667,7 +667,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it.only("status: 400, responds with message: 400 bad request if topic missing from req.body", () => {
+      it("status: 400, responds with message: 400 bad request if topic missing from req.body", () => {
         const author = "butter_bridge";
         const title = "a new story";
         const body = "the best story that ever was.";
@@ -704,7 +704,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("resource not found");
           });
       });
-      it.only("status: 404, responds with message: resource not found if topic does not exist", () => {
+      it("status: 404, responds with message: resource not found if topic does not exist", () => {
         const author = "butter_bridge";
         const title = "a new story";
         const body = "the best story that ever was.";
@@ -723,7 +723,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("resource not found");
           });
       });
-      it.only("status: 400, responds with message: 400: bad request if body is empty string", () => {
+      it("status: 400, responds with message: 400: bad request if body is empty string", () => {
         const author = "butter_bridge";
         const title = "a new story";
         const body = "";
@@ -824,7 +824,17 @@ describe("testing app.js", () => {
             expect(comments.length).toBe(0);
           });
       });
-      it("status: 200, returns an array of comments when limit query is provided", () => {});
+      it.only("status: 200, returns an array of comments when limit query is provided", () => {
+        const limit = 5;
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments?limit=${limit}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { comments } = body;
+            expect(comments.length).toBeLessThan(limit + 1);
+          });
+      });
       it("status: 400, returns a message: invalid query if limit <= 0", () => {});
       it("status: 400, returns a message: invalid query if limit >= 0", () => {});
       it("status: 400, returns a message: invalid query if limit is incorrect type", () => {});

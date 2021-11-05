@@ -824,7 +824,7 @@ describe("testing app.js", () => {
             expect(comments.length).toBe(0);
           });
       });
-      it.only("status: 200, returns an array of comments when limit query is provided", () => {
+      it("status: 200, returns an array of comments when limit query is provided", () => {
         const limit = 5;
         const articleId = 1;
         return request(app)
@@ -845,7 +845,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it.only("status: 400, returns a message: invalid query if limit > 100", () => {
+      it("status: 400, returns a message: invalid query if limit > 100", () => {
         const limit = 105;
         const articleId = 1;
         return request(app)
@@ -866,7 +866,7 @@ describe("testing app.js", () => {
             expect(comments.length).toBeLessThan(11);
           });
       });
-      it("status: 200, returns an array of comments offset by limit*p when p query added", () => {
+      it.only("status: 200, returns an array of comments offset by limit*p when p query added", () => {
         const p = 1;
         const articleId = 1;
         return request(app)
@@ -874,10 +874,19 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { comments } = body;
-            expect(comments.length).toBe(6);
+            expect(comments.length).toBe(1);
           });
       });
-      it("status: 400, returns a message: invalid query if p is Nan", () => {});
+      it.only("status: 400, returns a message: invalid query if p is Nan", () => {
+        const p = "one";
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments?p=${p}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
       it("status: 200, returns an array of comments with no offset when p <= 0", () => {});
       it("status: 200, returns an empty array when p too high", () => {});
     });

@@ -723,7 +723,26 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("resource not found");
           });
       });
-      it("status: 400, responds with message: 400: bad request if body is empty string", () => {});
+      it("status: 400, responds with message: 400: bad request if body is empty string", () => {
+        const author = "butter_bridge";
+        const title = "a new story";
+        const body = "";
+        const topic = "mitch";
+        const newArticle = {
+          author,
+          title,
+          body,
+          topic,
+        };
+
+        return request(app)
+          .post("/api/articles")
+          .send(newArticle)
+          .expect(201)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
       it("status: 400, responds with message: 400: bad request if title is empty string", () => {});
     });
   });

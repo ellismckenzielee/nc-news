@@ -542,6 +542,37 @@ describe("testing app.js", () => {
           });
       });
     });
+    describe.only("POST", () => {
+      it("status: 201, responds with newly created article", () => {
+        const author = "butter_bridge";
+        const title = "a new story";
+        const body = "the best story that ever was.";
+        const topic = "mitch";
+        const newArticle = {
+          author,
+          title,
+          body,
+          topic,
+        };
+        const testArticle = {
+          ...newArticle,
+          article_id: expect.any(Number),
+          votes: 0,
+          created_at: expect.any(String),
+          comment_count: 0,
+        };
+
+        return request(app)
+          .post("/api/articles")
+          .send(newArticle)
+          .expect(201)
+          .then(({ body }) => {
+            const { article } = body;
+            console.log(article);
+            expect(article).toEqual(testArticle);
+          });
+      });
+    });
   });
   describe("/api/articles/:article_id/comments", () => {
     describe("GET", () => {

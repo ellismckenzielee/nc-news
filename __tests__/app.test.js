@@ -651,11 +651,11 @@ describe("testing app.js", () => {
       });
       it.only("status: 400, responds with message: 400 bad request if body missing from req.body", () => {
         const author = "butter_bridge";
-        const body = "the best story that ever was.";
         const title = "a new story";
+        const topic = "mitch";
         const newArticle = {
           author,
-          body,
+          topic,
           title,
         };
 

@@ -125,7 +125,7 @@ exports.removeArticleById = (article_id) => {
 exports.insertArticle = (author, title, body, topic) => {
   console.log("in insertArticle model");
   console.log(author, title, body, topic);
-  if (!(author && title && topic)) {
+  if (!(author && title && body)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
     return db

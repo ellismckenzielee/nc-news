@@ -103,6 +103,27 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("topic already exists");
           });
       });
+      it("status: 400, responds with message: bad request if key is missing", () => {
+        const slug = "cool stuff";
+        return request(app)
+          .post("/api/topics")
+          .send({ slug })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
+      it("ststus: 400, responds with message: bad request if description is empty", () => {
+        const slug = "cool stuff";
+        const description = "";
+        return request(app)
+          .post("/api/topics")
+          .send({ slug, description })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
     });
     describe("INVALID METHODS", () => {
       it("status: 405, responds with message: method not allowed", () => {

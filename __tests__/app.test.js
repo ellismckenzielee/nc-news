@@ -614,7 +614,23 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
-      it("status: 400, responds with message: 400 bad request if author missing from req.body", () => {});
+      it.only("status: 400, responds with message: 400 bad request if author missing from req.body", () => {
+        const title = "a new story";
+        const body = "the best story that ever was.";
+        const topic = "mitch";
+        const newArticle = {
+          title,
+          body,
+          topic,
+        };
+        return request(app)
+          .post("/api/articles")
+          .send(newArticle)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
       it("status: 400, responds with message: 400 bad request if title missing from req.body", () => {});
       it("status: 400, responds with message: 400 bad request if body missing from req.body", () => {});
       it("status: 400, responds with message: 400 bad request if topic missing from req.body", () => {});

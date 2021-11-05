@@ -67,8 +67,10 @@ exports.deleteArticleById = (req, res, next) => {
 exports.postArticle = (req, res, next) => {
   console.log("in postArticle controller");
   const { author, title, body, topic } = req.body;
-  insertArticle(author, title, body, topic).then((article) => {
-    article.comment_count = 0;
-    res.status(201).send({ article });
-  });
+  insertArticle(author, title, body, topic)
+    .then((article) => {
+      article.comment_count = 0;
+      res.status(201).send({ article });
+    })
+    .catch(next);
 };

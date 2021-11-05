@@ -781,7 +781,7 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { comments } = body;
-            expect(comments.length).toBe(11);
+            expect(comments.length).toBeLessThan(11);
             comments.forEach((comment) => {
               expect(comment).toEqual(testComment);
             });
@@ -855,8 +855,17 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it("status: 400, returns a message: invalid query if limit is incorrect type", () => {});
-      it("status: 200, returns an array of comments of length 10 (default), when no limit provided", () => {
+      it("status: 400, returns a message: invalid query if limit is incorrect type", () => {
+        const limit = "ten";
+        const articleId = 1;
+        return request(app)
+          .get(`/api/articles/${articleId}/comments?limit=${limit}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
+      it("status: 200, returns an array of comments of length <= 10 (default), when no limit provided", () => {
         const articleId = 1;
         return request(app)
           .get(`/api/articles/${articleId}/comments`)
@@ -866,7 +875,7 @@ describe("testing app.js", () => {
             expect(comments.length).toBeLessThan(11);
           });
       });
-      it.only("status: 200, returns an array of comments offset by limit*p when p query added", () => {
+      it("status: 200, returns an array of comments offset by limit*p when p query added", () => {
         const p = 1;
         const articleId = 1;
         return request(app)
@@ -877,7 +886,7 @@ describe("testing app.js", () => {
             expect(comments.length).toBe(1);
           });
       });
-      it.only("status: 400, returns a message: invalid query if p is Nan", () => {
+      it("status: 400, returns a message: invalid query if p is NaN", () => {
         const p = "one";
         const articleId = 1;
         return request(app)
@@ -887,7 +896,7 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it.only("status: 200, returns an array of comments with no offset when p <= 0", () => {
+      it("status: 200, returns an array of comments with no offset when p <= 0", () => {
         const articleId = 1;
         const testComment = {
           comment_id: 5,
@@ -906,7 +915,7 @@ describe("testing app.js", () => {
             expect(comments[0]).toEqual(testComment);
           });
       });
-      it.only("status: 200, returns an empty array when p too high", () => {
+      it("status: 200, returns an empty array when p too high", () => {
         const p = 100;
         const articleId = 1;
         return request(app)

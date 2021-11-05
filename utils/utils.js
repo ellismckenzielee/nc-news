@@ -78,7 +78,7 @@ utils.assembleSelectArticlesQuery = (sort_by, order, filter, limit, p) => {
   returns query string and query params in an array which can be de-structured*/
   const pagination = p * limit;
   let queryParams = [];
-  let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
+  let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count, COUNT(*)::integer AS total_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
 
   if (filter) {
     queryString += ` WHERE articles.topic = $1`;

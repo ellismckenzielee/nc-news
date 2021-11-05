@@ -685,7 +685,25 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it("status: 404, responds with message: resource not found if author does not exist", () => {});
+      it("status: 404, responds with message: resource not found if author does not exist", () => {
+        const author = "ellis";
+        const title = "a new story";
+        const body = "the best story that ever was.";
+        const topic = "mitch";
+        const newArticle = {
+          author,
+          title,
+          body,
+          topic,
+        };
+        return request(app)
+          .post("/api/articles")
+          .send(newArticle)
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found");
+          });
+      });
       it("status: 404, responds with message: resource not found if topic does not exist", () => {});
       it("status: 400, responds with message: 400: bad request if body is empty string", () => {});
       it("status: 400, responds with message: 400: bad request if title is empty string", () => {});

@@ -47,7 +47,7 @@ exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
   order = handleOrderQuery(order);
   limit = handleLimitQuery(limit);
   p = handlePaginationOffset(p);
-  if (!(sort_by && order && limit)) {
+  if (!(sort_by && order && limit && p !== false)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
   } else {
     const [queryString, queryParams] = assembleSelectArticlesQuery(

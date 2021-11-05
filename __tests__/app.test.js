@@ -420,6 +420,7 @@ describe("testing app.js", () => {
             expect(articles).toBeSortedBy("title", { descending: true });
           });
       });
+      ///WOKRING ON
       it("status: 200, returns <= limit articles when a limit query is sent", () => {
         const limit = 5;
         return request(app)
@@ -427,7 +428,7 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            expect(articles.length).toBe(limit);
+            expect(articles.length).toBeLessThan(limit + 1);
           });
       });
       it("status: 200, returns <= 10 articles when a limit query is not present", () => {
@@ -478,7 +479,7 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
-            expect(articles.length).toBe(5);
+            expect(articles.length).toBeLessThan(limit + 1);
             expect(articles[0].title).toBe(
               "Seven inspirational thought leaders from Manchester UK"
             );
@@ -497,6 +498,16 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             const { articles } = body;
             expect(articles.length).toBe(0);
+          });
+      });
+      it("status: 400, responds with message: invalid query when p query is NaN", () => {
+        const limit = 5;
+        const p = "pageone";
+        return request(app)
+          .get(`/api/articles?limit=${limit}&p=${p}`)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
           });
       });
     });

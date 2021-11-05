@@ -125,12 +125,16 @@ exports.removeArticleById = (article_id) => {
 exports.insertArticle = (author, title, body, topic) => {
   console.log("in insertArticle model");
   console.log(author, title, body, topic);
-  return db
-    .query(
-      "INSERT INTO articles (author, title, body, topic) VALUES ( $1, $2, $3, $4) RETURNING *",
-      [author, title, body, topic]
-    )
-    .then(({ rows }) => {
-      return rows[0];
-    });
+  if (!author) {
+    return Promise.reject({ status: 400, msg: "400: bad request" });
+  } else {
+    return db
+      .query(
+        "INSERT INTO articles (author, title, body, topic) VALUES ( $1, $2, $3, $4) RETURNING *",
+        [author, title, body, topic]
+      )
+      .then(({ rows }) => {
+        return rows[0];
+      });
+  }
 };

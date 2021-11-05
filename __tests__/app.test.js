@@ -887,7 +887,25 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it("status: 200, returns an array of comments with no offset when p <= 0", () => {});
+      it.only("status: 200, returns an array of comments with no offset when p <= 0", () => {
+        const articleId = 1;
+        const testComment = {
+          comment_id: 5,
+          body: "I hate streaming noses",
+          votes: 0,
+          author: "icellusedkars",
+          created_at: expect.any(String),
+        };
+        return request(app)
+          .get(`/api/articles/${articleId}/comments`)
+          .expect(200)
+          .then(({ body }) => {
+            const { comments } = body;
+            console.log(comments);
+            expect(comments.length).toBeLessThan(11);
+            expect(comments[0]).toEqual(testComment);
+          });
+      });
       it("status: 200, returns an empty array when p too high", () => {});
     });
     describe("POST", () => {

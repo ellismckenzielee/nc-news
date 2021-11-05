@@ -94,4 +94,14 @@ describe("/api/topics", () => {
         });
     });
   });
+  describe("INVALID METHODS", () => {
+    it("status: 405, responds with message: method not allowed", () => {
+      return request(app)
+        .delete("/api/topics")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body.msg).toBe("method not allowed");
+        });
+    });
+  });
 });

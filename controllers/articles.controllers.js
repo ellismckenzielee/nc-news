@@ -5,6 +5,7 @@ const {
   insertArticleComment,
   selectArticleComments,
   removeArticleById,
+  insertArticle,
 } = require("../models/articles.models.js");
 
 exports.getArticleById = (req, res, next) => {
@@ -61,4 +62,13 @@ exports.deleteArticleById = (req, res, next) => {
       res.sendStatus(204);
     })
     .catch(next);
+};
+
+exports.postArticle = (req, res, next) => {
+  console.log("in postArticle controller");
+  const { author, title, body, topic } = req.body;
+  insertArticle(author, title, body, topic).then((article) => {
+    article.comment_count = 0;
+    res.status(201).send({ article });
+  });
 };

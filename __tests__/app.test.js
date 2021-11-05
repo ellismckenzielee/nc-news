@@ -667,7 +667,24 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("400: bad request");
           });
       });
-      it("status: 400, responds with message: 400 bad request if topic missing from req.body", () => {});
+      it.only("status: 400, responds with message: 400 bad request if topic missing from req.body", () => {
+        const author = "butter_bridge";
+        const title = "a new story";
+        const body = "the best story that ever was.";
+        const newArticle = {
+          author,
+          body,
+          title,
+        };
+
+        return request(app)
+          .post("/api/articles")
+          .send(newArticle)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("400: bad request");
+          });
+      });
       it("status: 404, responds with message: resource not found if author does not exist", () => {});
       it("status: 404, responds with message: resource not found if topic does not exist", () => {});
       it("status: 400, responds with message: 400: bad request if body is empty string", () => {});

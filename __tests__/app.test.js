@@ -467,7 +467,17 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
-      it("status 200: returns offset paginated articles when limit and offset (p) specified", () => {
+      it("status: 200, returns offset paginated articles when offset is specified", () => {
+        const p = 1;
+        return request(app)
+          .get(`/api/articles?p=${p}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { articles } = body;
+            expect(articles.length).toBe(2);
+          });
+      });
+      it("status 200: returns offset paginated articles when limit, offset (p), sort_by and order specified", () => {
         const limit = 5;
         const p = 1;
         const sort_by = "title";

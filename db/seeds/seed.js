@@ -103,8 +103,7 @@ const seed = (data) => {
         commentDataArray
       );
       return db.query(insertCommentsQuery);
-    })
-    .catch((err) => console.log(err));
+    });
 };
 
 module.exports = seed;

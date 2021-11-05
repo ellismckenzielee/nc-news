@@ -39,7 +39,6 @@ exports.getArticles = (req, res, next) => {
 exports.getArticleComments = (req, res, next) => {
   const { article_id } = req.params;
   const { limit, p } = req.query;
-  console.log(limit, p);
   selectArticleComments(article_id, limit, p)
     .then((comments) => {
       res.status(200).send({ comments });
@@ -67,7 +66,6 @@ exports.deleteArticleById = (req, res, next) => {
 };
 
 exports.postArticle = (req, res, next) => {
-  console.log("in postArticle controller");
   const { author, title, body, topic } = req.body;
   insertArticle(author, title, body, topic)
     .then((article) => {

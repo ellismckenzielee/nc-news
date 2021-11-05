@@ -74,10 +74,8 @@ exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
 };
 
 exports.selectArticleComments = (article_id, limit, p) => {
-  console.log("in article onctorlee");
   limit = handleLimitQuery(limit);
   p = handlePaginationOffset(p);
-  console.log("LIMIT", limit, p);
   const pagination = limit * p;
   if (!(limit && p !== false)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
@@ -131,8 +129,6 @@ exports.removeArticleById = (article_id) => {
 };
 
 exports.insertArticle = (author, title, body, topic) => {
-  console.log("in insertArticle model");
-  console.log(author, title, body, topic);
   if (!(author && title && body && topic)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {

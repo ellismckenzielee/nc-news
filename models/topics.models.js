@@ -7,8 +7,6 @@ exports.selectTopics = () => {
 };
 
 exports.insertTopic = (slug, description) => {
-  console.log("in insertTopic model");
-  console.log(slug, description);
   if (!(slug && description)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {

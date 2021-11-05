@@ -131,8 +131,7 @@ const seed_using_ids = ({ articleData, commentData, topicData, userData }) => {
         commentDataArray
       );
       return db.query(insertCommentsQuery);
-    })
-    .catch((err) => console.log(err));
+    });
 };
 
 module.exports = seed_using_ids;

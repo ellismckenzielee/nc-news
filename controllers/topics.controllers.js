@@ -8,7 +8,6 @@ exports.getTopics = (req, res, next) => {
 };
 
 exports.postTopic = (req, res, next) => {
-  console.log("in postTopic controller function");
   const { slug, description } = req.body;
   insertTopic(slug, description)
     .then((topic) => {

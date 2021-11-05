@@ -76,7 +76,6 @@ describe("testing app.js", () => {
           .expect(201)
           .then(({ body }) => {
             const { topic } = body;
-            console.log(topic);
             expect(topic).toEqual(testTopic);
           });
       });
@@ -583,7 +582,6 @@ describe("testing app.js", () => {
           .expect(201)
           .then(({ body }) => {
             const { article } = body;
-            console.log(article);
             expect(article).toEqual(testArticle);
           });
       });
@@ -910,7 +908,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { comments } = body;
-            console.log(comments);
             expect(comments.length).toBeLessThan(11);
             expect(comments[0]).toEqual(testComment);
           });

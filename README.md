@@ -60,3 +60,15 @@ npm test
 
 - node: v14.17.6
 - postgres: v14
+
+## Additional Information
+
+### Pagination
+
+- Endpoints with pagination are 0-indexed
+- Default page is page 0
+
+### Limits
+
+- GET endpoints respond with 10 objects by default
+- Append ?limit= to modify number of returned objects

@@ -6,7 +6,7 @@
 
 ## Project Summary
 
-Northcoders News API is a restful API which serves article, comment and topic information to endpoints specified in *https://nc-news-ellis.herokuapp.com/api*. The API stack is a combination of JavaScript/Express and a Postgres DBMS.
+Northcoders News API is a restful API which serves article, comment, topic and user information to endpoints specified in *https://nc-news-ellis.herokuapp.com/api*. The API stack is a combination of JavaScript/Express and a Postgres DBMS.
 
 ```http
 *example endpoints*

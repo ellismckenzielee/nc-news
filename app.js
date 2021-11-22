@@ -1,14 +1,11 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const apiRouter = require("./routes/api-router");
-const {
-  handleCustomErrors,
-  handlePSQLErrors,
-  handle500,
-  handle404,
-} = require("./controllers/errors.controllers");
+const { handleCustomErrors, handlePSQLErrors, handle500, handle404 } = require("./controllers/errors.controllers");
 
 //setup middleware
+app.use(cors());
 app.use(express.json());
 
 //setup routes

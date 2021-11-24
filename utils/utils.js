@@ -45,17 +45,7 @@ utils.handleSortQuery = (sort_by) => {
   if (!sort_by) {
     return "created_at";
   } else {
-    if (
-      ![
-        "author",
-        "title",
-        "article_id",
-        "topic",
-        "created_at",
-        "votes",
-        "comment_count",
-      ].includes(sort_by)
-    ) {
+    if (!["author", "title", "article_id", "topic", "created_at", "votes", "comment_count"].includes(sort_by)) {
       return false;
     }
   }
@@ -78,7 +68,7 @@ utils.assembleSelectArticlesQuery = (sort_by, order, filter, limit, p) => {
   returns query string and query params in an array which can be de-structured*/
   const pagination = p * limit;
   let queryParams = [];
-  let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count, COUNT(*)::integer AS total_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
+  let queryString = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comments.comment_id )::integer AS comment_count, COUNT(*) OVER() ::integer AS total_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
 
   if (filter) {
     queryString += ` WHERE articles.topic = $1`;

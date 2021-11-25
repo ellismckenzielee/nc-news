@@ -1162,13 +1162,14 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe.only("/api/users", () => {
+  describe("/api/users", () => {
     describe("GET", () => {
       it("status: 200, responds with an array of user objects", () => {
         const testUser = {
           username: expect.any(String),
           avatar_url: expect.any(String),
           name: expect.any(String),
+          total_votes: expect.any(String),
         };
         return request(app)
           .get("/api/users")
@@ -1176,6 +1177,7 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             const { users } = body;
             expect(users.length).toBe(4);
+            console.log(users);
             users.forEach((user) => {
               expect(user).toEqual(testUser);
             });

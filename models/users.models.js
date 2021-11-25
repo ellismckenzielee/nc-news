@@ -2,9 +2,14 @@ const db = require("../db/connection");
 const articles = require("../db/data/test-data/articles");
 
 exports.selectUsers = () => {
-  return db.query("SELECT username, avatar_url, name FROM users;").then(({ rows }) => {
-    return rows;
-  });
+  return db
+    .query(
+      "SELECT username, avatar_url, name, COALESCE(comment_votes + article_votes,0) AS total_votes  FROM users LEFT JOIN (SELECT comments.author, SUM(votes) AS comment_votes FROM comments GROUP BY comments.author) AS p ON p.author = username LEFT JOIN (SELECT articles.author, SUM(votes) AS article_votes FROM articles GROUP BY articles.author) AS q ON q.author = username;"
+    )
+    .then(({ rows }) => {
+      return rows;
+    })
+    .catch(console.log);
 };
 
 exports.selectUserByUsername = (username) => {

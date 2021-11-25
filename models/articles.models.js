@@ -1,11 +1,5 @@
 const db = require("../db/connection");
-const {
-  handleSortQuery,
-  handleOrderQuery,
-  assembleSelectArticlesQuery,
-  handleLimitQuery,
-  handlePaginationOffset,
-} = require("../utils/utils");
+const { handleSortQuery, handleOrderQuery, assembleSelectArticlesQuery, handleLimitQuery, handlePaginationOffset } = require("../utils/utils");
 
 exports.selectArticleById = (article_id) => {
   return db
@@ -26,18 +20,13 @@ exports.updateArticleById = (article_id, inc_votes) => {
   if (isNaN(inc_votes)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
-    return db
-      .query(
-        "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",
-        [inc_votes, article_id]
-      )
-      .then(({ rows }) => {
-        if (rows.length > 0) {
-          return rows[0];
-        } else {
-          return Promise.reject({ status: 404, msg: "article not found" });
-        }
-      });
+    return db.query("UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;", [inc_votes, article_id]).then(({ rows }) => {
+      if (rows.length > 0) {
+        return rows[0];
+      } else {
+        return Promise.reject({ status: 404, msg: "article not found" });
+      }
+    });
   }
 };
 
@@ -49,13 +38,7 @@ exports.selectArticles = ({ sort_by, order, topicFilter, limit, p }) => {
   if (!(sort_by && order && limit && p !== false)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
   } else {
-    const [queryString, queryParams] = assembleSelectArticlesQuery(
-      sort_by,
-      order,
-      topicFilter,
-      limit,
-      p
-    );
+    const [queryString, queryParams] = assembleSelectArticlesQuery(sort_by, order, topicFilter, limit, p);
     return db
       .query(queryString, queryParams)
       .then(({ rows }) => {
@@ -81,15 +64,13 @@ exports.selectArticleComments = (article_id, limit, p) => {
     return Promise.reject({ status: 400, msg: "invalid query" });
   }
   return db
-    .query(
-      "SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id=$1 ORDER BY created_at DESC LIMIT $2 OFFSET $3;",
-      [article_id, limit, pagination]
-    )
+    .query("SELECT comment_id, votes, created_at, author, body,COUNT(*) OVER() ::integer AS total_count   FROM comments WHERE article_id=$1 ORDER BY created_at DESC LIMIT $2 OFFSET $3;", [
+      article_id,
+      limit,
+      pagination,
+    ])
     .then(({ rows }) => {
-      return Promise.all([
-        rows,
-        db.query("SELECT * FROM articles WHERE article_id = $1;", [article_id]),
-      ]);
+      return Promise.all([rows, db.query("SELECT * FROM articles WHERE article_id = $1;", [article_id])]);
     })
     .then(([comments, { rows: articles }]) => {
       if (comments.length) return comments;
@@ -107,38 +88,24 @@ exports.insertArticleComment = (username, body, article_id) => {
   if (!(username && body && article_id) || isNaN(article_id)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
-    return db
-      .query(
-        "INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;",
-        [username, body, article_id]
-      )
-      .then(({ rows }) => {
-        return rows[0];
-      });
+    return db.query("INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;", [username, body, article_id]).then(({ rows }) => {
+      return rows[0];
+    });
   }
 };
 
 exports.removeArticleById = (article_id) => {
-  return db
-    .query("DELETE FROM articles WHERE article_id = $1;", [article_id])
-    .then(({ rowCount }) => {
-      return rowCount
-        ? rowCount
-        : Promise.reject({ status: 404, msg: "article not found" });
-    });
+  return db.query("DELETE FROM articles WHERE article_id = $1;", [article_id]).then(({ rowCount }) => {
+    return rowCount ? rowCount : Promise.reject({ status: 404, msg: "article not found" });
+  });
 };
 
 exports.insertArticle = (author, title, body, topic) => {
   if (!(author && title && body && topic)) {
     return Promise.reject({ status: 400, msg: "400: bad request" });
   } else {
-    return db
-      .query(
-        "INSERT INTO articles (author, title, body, topic) VALUES ( $1, $2, $3, $4) RETURNING *",
-        [author, title, body, topic]
-      )
-      .then(({ rows }) => {
-        return rows[0];
-      });
+    return db.query("INSERT INTO articles (author, title, body, topic) VALUES ( $1, $2, $3, $4) RETURNING *", [author, title, body, topic]).then(({ rows }) => {
+      return rows[0];
+    });
   }
 };

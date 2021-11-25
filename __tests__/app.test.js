@@ -1253,6 +1253,16 @@ describe("testing app.js", () => {
             expect(msg).toBe("Invalid query");
           });
       });
+      it("status 400: returns a message: Invalid query when invalid order passed as param", () => {
+        const order = "upsidedown";
+        return request(app)
+          .get(`/api/users?order=${order}`)
+          .expect(400)
+          .then(({ body }) => {
+            const { msg } = body;
+            expect(msg).toBe("Invalid query");
+          });
+      });
     });
     describe("POST", () => {
       it("status: 201, responds with new user", () => {

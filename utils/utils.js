@@ -118,6 +118,7 @@ utils.handleUserSortOrder = (order) => {
       return order;
     }
   }
+  return false;
 };
 
 utils.assembleSelectUsersQuery = (sort_by, order) => {

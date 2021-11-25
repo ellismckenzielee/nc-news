@@ -503,16 +503,12 @@ describe("testing app.js", () => {
         const sort_by = "title";
         const order = "DESC";
         return request(app)
-          .get(
-            `/api/articles?limit=${limit}&p=${p}&sort_by=${sort_by}&order=${order}`
-          )
+          .get(`/api/articles?limit=${limit}&p=${p}&sort_by=${sort_by}&order=${order}`)
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
             expect(articles.length).toBeLessThan(limit + 1);
-            expect(articles[0].title).toBe(
-              "Seven inspirational thought leaders from Manchester UK"
-            );
+            expect(articles[0].title).toBe("Seven inspirational thought leaders from Manchester UK");
           });
       });
       it("status: 200: returns empty array when p value too high", () => {
@@ -521,9 +517,7 @@ describe("testing app.js", () => {
         const sort_by = "title";
         const order = "DESC";
         return request(app)
-          .get(
-            `/api/articles?limit=${limit}&p=${p}&sort_by=${sort_by}&order=${order}`
-          )
+          .get(`/api/articles?limit=${limit}&p=${p}&sort_by=${sort_by}&order=${order}`)
           .expect(200)
           .then(({ body }) => {
             const { articles } = body;
@@ -771,6 +765,7 @@ describe("testing app.js", () => {
           created_at: expect.any(String),
           author: expect.any(String),
           body: expect.any(String),
+          total_count: expect.any(Number),
         };
         const articleId = 1;
         return request(app)
@@ -778,7 +773,7 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { comments } = body;
-            expect(comments.length).toBeLessThan(11);
+            expect(comments.length).toBeLessThan(12);
             comments.forEach((comment) => {
               expect(comment).toEqual(testComment);
             });
@@ -901,13 +896,14 @@ describe("testing app.js", () => {
           votes: 0,
           author: "icellusedkars",
           created_at: expect.any(String),
+          total_count: expect.any(Number),
         };
         return request(app)
           .get(`/api/articles/${articleId}/comments`)
           .expect(200)
           .then(({ body }) => {
             const { comments } = body;
-            expect(comments.length).toBeLessThan(11);
+            expect(comments.length).toBeLessThan(12);
             expect(comments[0]).toEqual(testComment);
           });
       });
@@ -1206,8 +1202,7 @@ describe("testing app.js", () => {
       it("status: 200, responds with a user object", () => {
         const testUser = {
           username: "butter_bridge",
-          avatar_url:
-            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+          avatar_url: "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
           name: "jonny",
         };
         const username = "butter_bridge";
@@ -1236,6 +1231,14 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             expect(body.msg).toBe("Invalid URL");
           });
+      });
+    });
+  });
+  describe("/api/users/:username/articles", () => {
+    describe("GET", () => {
+      it("status: 200, responds with an array of articles", () => {
+        const username = "butter_bridge";
+        return request(app).get(`/api/users/${username}/articles`).expect(200);
       });
     });
   });

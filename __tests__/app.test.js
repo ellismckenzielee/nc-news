@@ -1235,10 +1235,46 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/users/:username/articles", () => {
-    describe("GET", () => {
+    describe.only("GET", () => {
       it("status: 200, responds with an array of articles", () => {
         const username = "butter_bridge";
-        return request(app).get(`/api/users/${username}/articles`).expect(200);
+        return request(app)
+          .get(`/api/users/${username}/articles`)
+          .expect(200)
+          .then((response) => {
+            const { articles } = response.body;
+            expect(articles).toHaveLength(3);
+          });
+      });
+      it("status: 404, responds with user not found", () => {
+        const username = "butter_bridges";
+        const expected = "user not found";
+        return request(app)
+          .get(`/api/users/${username}/articles`)
+          .expect(404)
+          .then((response) => {
+            const { msg } = response.body;
+            expect(msg).toBe(expected);
+          });
+      });
+      it("status: 404, responds with invalid url", () => {
+        const username = "butter_bridge";
+        return request(app)
+          .get(`/api/users/${username}/articless`)
+          .expect(404)
+          .then((response) => {
+            const { msg } = response.body;
+            expect(msg).toBe("Invalid URL");
+          });
+      });
+      it("status: 200, responds with empty array for a user that exists", () => {
+        const username = "lurker";
+        return request(app)
+          .get(`/api/users/${username}/articles`)
+          .expect(200)
+          .then((response) => {
+            console.log(response.body);
+          });
       });
     });
   });

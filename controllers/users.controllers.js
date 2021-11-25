@@ -16,7 +16,9 @@ exports.getUserByUsername = (req, res, next) => {
 exports.getArticlesByUsername = (req, res, next) => {
   console.log("in get articles by username");
   const { username } = req.params;
-  selectArticlesByUsername(username).then((articles) => {
-    res.status(200).send(articles);
-  });
+  selectArticlesByUsername(username)
+    .then((articles) => {
+      res.status(200).send({ articles });
+    })
+    .catch(next);
 };

@@ -1162,14 +1162,14 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe("/api/users", () => {
-    describe("GET", () => {
+  describe.only("/api/users", () => {
+    describe.only("GET", () => {
       it("status: 200, responds with an array of user objects", () => {
         const testUser = {
           username: expect.any(String),
           avatar_url: expect.any(String),
           name: expect.any(String),
-          total_votes: expect.any(String),
+          total_votes: expect.any(Number),
         };
         return request(app)
           .get("/api/users")
@@ -1199,6 +1199,17 @@ describe("testing app.js", () => {
             expect(body.msg).toBe("Invalid URL");
           });
       });
+      it("status 200: returns a descending sorted array of users based on total_votes", () => {
+        const sort_by = "total_votes";
+        return request(app)
+          .get(`/api/users?sort_by=${sort_by}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { users } = body;
+            console.log(users);
+            expect(users).toBeSortedBy("total_votes", { descending: true });
+          });
+      });
     });
     describe("POST", () => {
       it("status: 201, responds with new user", () => {
@@ -1206,7 +1217,7 @@ describe("testing app.js", () => {
         const name = "Ellis Lee";
         const avatar_url = "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png";
         return request(app)
-          .post("/api//users")
+          .post("/api/users")
           .send({ username, name, avatar_url })
           .expect(201)
           .then(({ body }) => {

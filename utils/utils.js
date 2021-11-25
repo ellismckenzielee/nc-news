@@ -93,3 +93,9 @@ utils.handlePaginationOffset = (p) => {
   if (isNaN(p)) return false;
   return p;
 };
+
+utils.assembleSelectUsersQuery = () => {
+  let query =
+    "SELECT username, avatar_url, name, COALESCE(comment_votes + article_votes,0)::int AS total_votes  FROM users LEFT JOIN (SELECT comments.author, SUM(votes) AS comment_votes FROM comments GROUP BY comments.author) AS p ON p.author = username LEFT JOIN (SELECT articles.author, SUM(votes) AS article_votes FROM articles GROUP BY articles.author) AS q ON q.author = username ORDER BY total_votes DESC;";
+  return query;
+};

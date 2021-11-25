@@ -26,7 +26,8 @@ exports.getArticlesByUsername = (req, res, next) => {
 exports.postUser = (req, res, next) => {
   console.log("in post user controller");
   const { username, name, avatar_url } = req.body;
-  console.log(username, name, avatar_url);
+  const { sort_by, order } = req.params;
+  console.log(username, name, avatar_url, sort_by, order);
   insertUser(username, name, avatar_url).then((user) => {
     res.status(201).send({ user });
   });

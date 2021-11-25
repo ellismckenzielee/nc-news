@@ -1162,11 +1162,13 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe("/api/users", () => {
+  describe.only("/api/users", () => {
     describe("GET", () => {
       it("status: 200, responds with an array of user objects", () => {
         const testUser = {
           username: expect.any(String),
+          avatar_url: expect.any(String),
+          name: expect.any(String),
         };
         return request(app)
           .get("/api/users")
@@ -1181,7 +1183,7 @@ describe("testing app.js", () => {
       });
       it("status: 405, returns message: method not allowed when using invalid HTTP verb", () => {
         return request(app)
-          .post("/api/users")
+          .patch("/api/users")
           .expect(405)
           .then(({ body }) => {
             expect(body.msg).toBe("method not allowed");
@@ -1196,7 +1198,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("POST", () => {
+    describe("POST", () => {
       it("status: 201, responds with new user", () => {
         const username = "elee";
         const name = "Ellis Lee";
@@ -1298,7 +1300,7 @@ describe("testing app.js", () => {
             expect(msg).toBe("Invalid URL");
           });
       });
-      it.only("status: 200, responds with empty array for a user that exists", () => {
+      it("status: 200, responds with empty array for a user that exists", () => {
         const username = "lurker";
         return request(app)
           .get(`/api/users/${username}/articles`)

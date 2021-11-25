@@ -2,7 +2,7 @@ const db = require("../db/connection");
 const articles = require("../db/data/test-data/articles");
 
 exports.selectUsers = () => {
-  return db.query("SELECT username FROM users;").then(({ rows }) => {
+  return db.query("SELECT username, avatar_url, name FROM users;").then(({ rows }) => {
     return rows;
   });
 };

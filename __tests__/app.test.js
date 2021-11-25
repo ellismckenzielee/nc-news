@@ -1238,12 +1238,27 @@ describe("testing app.js", () => {
     describe.only("GET", () => {
       it("status: 200, responds with an array of articles", () => {
         const username = "butter_bridge";
+        const testArticle = {
+          article_id: expect.any(Number),
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(Number),
+        };
+
         return request(app)
           .get(`/api/users/${username}/articles`)
           .expect(200)
           .then((response) => {
             const { articles } = response.body;
             expect(articles).toHaveLength(3);
+            console.log(articles[0]);
+            articles.forEach((article) => {
+              expect(article).toEqual(testArticle);
+            });
           });
       });
       it("status: 404, responds with user not found", () => {

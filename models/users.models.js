@@ -16,16 +16,21 @@ exports.selectUserByUsername = (username) => {
 
 exports.selectArticlesByUsername = (username) => {
   console.log("in select articles by username", username);
-  return db.query("SELECT articles.title  FROM users LEFT JOIN articles ON  users.username = articles.author WHERE author=$1;", [username]).then(({ rows }) => {
-    if (rows.length > 0) return rows;
-    else {
-      console.log("THEN", username);
-      return Promise.all([rows, db.query("SELECT * FROM users WHERE username=$1", [username])]).then(([articles, { rows }]) => {
-        console.log("then block");
-        console.log(articles, rows);
-        if (rows.length === 0) return Promise.reject({ status: 404, msg: "user not found" });
-        else return articles;
-      });
-    }
-  });
+  return db
+    .query(
+      "SELECT articles.article_id, articles.title, articles.topic, articles.body, articles.author, articles.created_at, articles.votes, COUNT(*)::int AS comment_count  FROM articles LEFT JOIN comments ON articles.article_id = comments.comment_id WHERE articles.author=$1 GROUP BY articles.article_id;",
+      [username]
+    )
+    .then(({ rows }) => {
+      if (rows.length > 0) return rows;
+      else {
+        console.log("THEN", username);
+        return Promise.all([rows, db.query("SELECT * FROM users WHERE username=$1", [username])]).then(([articles, { rows }]) => {
+          console.log("then block");
+          console.log(articles, rows);
+          if (rows.length === 0) return Promise.reject({ status: 404, msg: "user not found" });
+          else return articles;
+        });
+      }
+    });
 };

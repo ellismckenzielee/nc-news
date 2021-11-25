@@ -1162,8 +1162,8 @@ describe("testing app.js", () => {
       });
     });
   });
-  describe.only("/api/users", () => {
-    describe.only("GET", () => {
+  describe("/api/users", () => {
+    describe("GET", () => {
       it("status: 200, responds with an array of user objects", () => {
         const testUser = {
           username: expect.any(String),
@@ -1208,6 +1208,39 @@ describe("testing app.js", () => {
             const { users } = body;
             console.log(users);
             expect(users).toBeSortedBy("total_votes", { descending: true });
+          });
+      });
+      it("status 200: returns a descending sorted array of users based on name", () => {
+        const sort_by = "name";
+        return request(app)
+          .get(`/api/users?sort_by=${sort_by}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { users } = body;
+            console.log(users);
+            expect(users).toBeSortedBy("name", { descending: true });
+          });
+      });
+      it.only("status 200: returns a descending sorted array of users based on usernames", () => {
+        const sort_by = "username";
+        return request(app)
+          .get(`/api/users?sort_by=${sort_by}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { users } = body;
+            console.log(users);
+            expect(users).toBeSortedBy("username", { descending: true });
+          });
+      });
+      it.only("status 200: returns an ascending sorted array of users based on usernames", () => {
+        const order = "ASC";
+        return request(app)
+          .get(`/api/users?order=${order}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { users } = body;
+            console.log(users);
+            expect(users).toBeSortedBy("username", { descending: false });
           });
       });
     });

@@ -1,8 +1,11 @@
 const db = require("../db/connection");
 const articles = require("../db/data/test-data/articles");
-const { assembleSelectUsersQuery } = require("../utils/utils");
-exports.selectUsers = () => {
-  const query = assembleSelectUsersQuery();
+const { assembleSelectUsersQuery, handleUserSortQuery, handleUserSortOrder } = require("../utils/utils");
+exports.selectUsers = (sort_by, order) => {
+  console.log("in models");
+  sort_by = handleUserSortQuery(sort_by);
+  order = handleUserSortOrder(order);
+  const query = assembleSelectUsersQuery(sort_by, order);
   return db
     .query(query)
     .then(({ rows }) => {

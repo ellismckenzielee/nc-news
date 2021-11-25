@@ -1221,7 +1221,7 @@ describe("testing app.js", () => {
             expect(users).toBeSortedBy("name", { descending: true });
           });
       });
-      it.only("status 200: returns a descending sorted array of users based on usernames", () => {
+      it("status 200: returns a descending sorted array of users based on usernames", () => {
         const sort_by = "username";
         return request(app)
           .get(`/api/users?sort_by=${sort_by}`)
@@ -1232,7 +1232,7 @@ describe("testing app.js", () => {
             expect(users).toBeSortedBy("username", { descending: true });
           });
       });
-      it.only("status 200: returns an ascending sorted array of users based on usernames", () => {
+      it("status 200: returns an ascending sorted array of users based on usernames", () => {
         const order = "ASC";
         return request(app)
           .get(`/api/users?order=${order}`)

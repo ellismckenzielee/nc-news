@@ -1163,7 +1163,7 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/users", () => {
-    describe("GET", () => {
+    describe.only("GET", () => {
       it("status: 200, responds with an array of user objects", () => {
         const testUser = {
           username: expect.any(String),
@@ -1241,6 +1241,16 @@ describe("testing app.js", () => {
             const { users } = body;
             console.log(users);
             expect(users).toBeSortedBy("username", { descending: false });
+          });
+      });
+      it("status 400: returns a message: Invalid query when invalid sort_by passed as param", () => {
+        const sort_by = "invalid";
+        return request(app)
+          .get(`/api/users?sort_by=${sort_by}`)
+          .expect(400)
+          .then(({ body }) => {
+            const { msg } = body;
+            expect(msg).toBe("Invalid query");
           });
       });
     });

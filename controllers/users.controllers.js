@@ -4,7 +4,9 @@ exports.getUsers = (req, res, next) => {
   console.log(req.params);
   const { sort_by, order } = req.query;
   console.log(sort_by, order);
-  selectUsers(sort_by, order).then((users) => res.status(200).send({ users }));
+  selectUsers(sort_by, order)
+    .then((users) => res.status(200).send({ users }))
+    .catch(next);
 };
 
 exports.getUserByUsername = (req, res, next) => {

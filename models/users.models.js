@@ -5,13 +5,11 @@ exports.selectUsers = (sort_by, order) => {
   console.log("in models");
   sort_by = handleUserSortQuery(sort_by);
   order = handleUserSortOrder(order);
+  if (!(sort_by && order)) return Promise.reject({ status: 400, msg: "Invalid query" });
   const query = assembleSelectUsersQuery(sort_by, order);
-  return db
-    .query(query)
-    .then(({ rows }) => {
-      return rows;
-    })
-    .catch(console.log);
+  return db.query(query).then(({ rows }) => {
+    return rows;
+  });
 };
 
 exports.selectUserByUsername = (username) => {

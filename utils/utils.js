@@ -104,6 +104,7 @@ utils.handleUserSortQuery = (sort_by) => {
       return sort_by;
     }
   }
+  return false;
 };
 
 utils.handleUserSortOrder = (order) => {

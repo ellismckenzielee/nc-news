@@ -64,7 +64,7 @@ exports.selectArticleComments = (article_id, limit, p) => {
     return Promise.reject({ status: 400, msg: "invalid query" });
   }
   return db
-    .query("SELECT comment_id, votes, created_at, author, body,COUNT(*) OVER() ::integer AS total_count   FROM comments WHERE article_id=$1 ORDER BY created_at DESC LIMIT $2 OFFSET $3;", [
+    .query("SELECT comment_id, votes, created_at, author, body, COUNT(votes)::int as total_count FROM comments WHERE article_id=$1 ORDER BY created_at DESC LIMIT $2 OFFSET $3;", [
       article_id,
       limit,
       pagination,

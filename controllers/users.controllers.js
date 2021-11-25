@@ -32,7 +32,9 @@ exports.postUser = (req, res, next) => {
   console.log("in post user controller");
   const { username, name, avatar_url } = req.body;
   console.log(username, name, avatar_url);
-  insertUser(username, name, avatar_url).then((user) => {
-    res.status(201).send({ user });
-  });
+  insertUser(username, name, avatar_url)
+    .then((user) => {
+      res.status(201).send({ user });
+    })
+    .catch(next);
 };

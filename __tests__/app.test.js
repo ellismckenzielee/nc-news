@@ -91,7 +91,7 @@ describe("testing app.js", () => {
             expect(body.msg).toEqual("Invalid URL");
           });
       });
-      it("status: 409, responds with message: topic already exists", () => {
+      it("status: 409, responds with message: resource already exists", () => {
         const slug = "mitch";
         const description = "a band";
         return request(app)
@@ -99,7 +99,7 @@ describe("testing app.js", () => {
           .send({ slug, description })
           .expect(409)
           .then(({ body }) => {
-            expect(body.msg).toBe("topic already exists");
+            expect(body.msg).toBe("resource already exists");
           });
       });
       it("status: 400, responds with message: bad request if key is missing", () => {
@@ -1163,7 +1163,7 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/users", () => {
-    describe.only("GET", () => {
+    describe("GET", () => {
       it("status: 200, responds with an array of user objects", () => {
         const testUser = {
           username: expect.any(String),
@@ -1278,6 +1278,19 @@ describe("testing app.js", () => {
             expect(user.username).toBe(username);
             expect(user.name).toBe(name);
             expect(user.avatar_url).toBe(avatar_url);
+          });
+      });
+      it("status: 409, returns a message: username already exists", () => {
+        const username = "butter_bridge";
+        const name = "Unique";
+        const avatar_url = "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png";
+        return request(app)
+          .post("/api/users")
+          .send({ username, name, avatar_url })
+          .expect(409)
+          .then(({ body }) => {
+            const { msg } = body;
+            expect(msg).toBe("resource already exists");
           });
       });
     });

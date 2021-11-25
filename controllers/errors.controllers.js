@@ -16,7 +16,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
       },
       23505: {
         status: 409,
-        msg: "topic already exists",
+        msg: "resource already exists",
       },
     };
     const customError = errorConverter[err.code];

@@ -1196,6 +1196,24 @@ describe("testing app.js", () => {
           });
       });
     });
+    describe.only("POST", () => {
+      it("status: 201, responds with new user", () => {
+        const username = "elee";
+        const name = "Ellis Lee";
+        const avatar_url = "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png";
+        return request(app)
+          .post("/api//users")
+          .send({ username, name, avatar_url })
+          .expect(201)
+          .then(({ body }) => {
+            const { user } = body;
+            console.log(user);
+            expect(user.username).toBe(username);
+            expect(user.name).toBe(name);
+            expect(user.avatar_url).toBe(avatar_url);
+          });
+      });
+    });
   });
   describe("/api/users/:username", () => {
     describe("GET", () => {
@@ -1235,7 +1253,7 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/users/:username/articles", () => {
-    describe.only("GET", () => {
+    describe("GET", () => {
       it("status: 200, responds with an array of articles", () => {
         const username = "butter_bridge";
         const testArticle = {

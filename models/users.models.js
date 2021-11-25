@@ -34,3 +34,11 @@ exports.selectArticlesByUsername = (username) => {
       }
     });
 };
+
+exports.insertUser = (username, name, avatar_url) => {
+  console.log("in insert usqer function");
+  return db.query("INSERT INTO users VALUES ($1, $2, $3) RETURNING *;", [username, name, avatar_url]).then(({ rows }) => {
+    console.log(rows);
+    return rows[0];
+  });
+};

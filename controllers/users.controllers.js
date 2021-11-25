@@ -1,4 +1,4 @@
-const { selectUsers, selectUserByUsername, selectArticlesByUsername } = require("../models/users.models");
+const { selectUsers, selectUserByUsername, selectArticlesByUsername, insertUser } = require("../models/users.models");
 
 exports.getUsers = (req, res, next) => {
   selectUsers().then((users) => res.status(200).send({ users }));
@@ -21,4 +21,13 @@ exports.getArticlesByUsername = (req, res, next) => {
       res.status(200).send({ articles });
     })
     .catch(next);
+};
+
+exports.postUser = (req, res, next) => {
+  console.log("in post user controller");
+  const { username, name, avatar_url } = req.body;
+  console.log(username, name, avatar_url);
+  insertUser(username, name, avatar_url).then((user) => {
+    res.status(201).send({ user });
+  });
 };

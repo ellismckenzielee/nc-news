@@ -1207,7 +1207,6 @@ describe("testing app.js", () => {
           .expect(201)
           .then(({ body }) => {
             const { user } = body;
-            console.log(user);
             expect(user.username).toBe(username);
             expect(user.name).toBe(name);
             expect(user.avatar_url).toBe(avatar_url);
@@ -1273,7 +1272,6 @@ describe("testing app.js", () => {
           .then((response) => {
             const { articles } = response.body;
             expect(articles).toHaveLength(3);
-            console.log(articles[0]);
             articles.forEach((article) => {
               expect(article).toEqual(testArticle);
             });
@@ -1300,13 +1298,14 @@ describe("testing app.js", () => {
             expect(msg).toBe("Invalid URL");
           });
       });
-      it("status: 200, responds with empty array for a user that exists", () => {
+      it.only("status: 200, responds with empty array for a user that exists", () => {
         const username = "lurker";
         return request(app)
           .get(`/api/users/${username}/articles`)
           .expect(200)
           .then((response) => {
-            console.log(response.body);
+            const { articles } = response.body;
+            expect(articles).toEqual([]);
           });
       });
     });

@@ -2,10 +2,8 @@ const db = require("../db/connection");
 const articles = require("../db/data/test-data/articles");
 const { assembleSelectUsersQuery, handleUserSortQuery, handleUserSortOrder } = require("../utils/utils");
 exports.selectUsers = (sort_by, order) => {
-  console.log("in models");
   sort_by = handleUserSortQuery(sort_by);
   order = handleUserSortOrder(order);
-  console.log("!!!", order, sort_by);
   if (!(sort_by && order)) return Promise.reject({ status: 400, msg: "Invalid query" });
   const query = assembleSelectUsersQuery(sort_by, order);
   return db.query(query).then(({ rows }) => {
@@ -21,7 +19,6 @@ exports.selectUserByUsername = (username) => {
 };
 
 exports.selectArticlesByUsername = (username) => {
-  console.log("in select articles by username", username);
   return db
     .query(
       "SELECT articles.article_id, articles.title, articles.topic, articles.body, articles.author, articles.created_at, articles.votes, COUNT(*)::int AS comment_count  FROM articles LEFT JOIN comments ON articles.article_id = comments.comment_id WHERE articles.author=$1 GROUP BY articles.article_id;",
@@ -30,10 +27,7 @@ exports.selectArticlesByUsername = (username) => {
     .then(({ rows }) => {
       if (rows.length > 0) return rows;
       else {
-        console.log("THEN", username);
         return Promise.all([rows, db.query("SELECT * FROM users WHERE username=$1", [username])]).then(([articles, { rows }]) => {
-          console.log("then block");
-          console.log(articles, rows);
           if (rows.length === 0) return Promise.reject({ status: 404, msg: "user not found" });
           else return articles;
         });
@@ -42,18 +36,13 @@ exports.selectArticlesByUsername = (username) => {
 };
 
 exports.insertUser = (username, name, avatar_url) => {
-  console.log("in insert usqer function");
   return db.query("INSERT INTO users VALUES ($1, $2, $3) RETURNING *;", [username, name, avatar_url]).then(({ rows }) => {
-    console.log(rows);
     return rows[0];
   });
 };
 
 exports.removeUserById = (username) => {
-  console.log("in remove user by id model");
-  console.log(username);
   return db.query("DELETE FROM users WHERE username=$1", [username]).then(({ rowCount }) => {
-    console.log(rowCount);
     return rowCount !== 0 ? rowCount : Promise.reject({ status: 404, msg: "user not found" });
   });
 };

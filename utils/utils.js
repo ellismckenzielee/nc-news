@@ -110,7 +110,6 @@ utils.handleUserSortQuery = (sort_by) => {
 utils.handleUserSortOrder = (order) => {
   /*sets default order and returns order method. 
   returns false if order not in a list of accepter order methods*/
-  console.log("inhandle usersortorder");
   if (!order) {
     return "DESC";
   } else {

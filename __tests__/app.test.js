@@ -1177,7 +1177,6 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             const { users } = body;
             expect(users.length).toBe(4);
-            console.log(users);
             users.forEach((user) => {
               expect(user).toEqual(testUser);
             });
@@ -1206,7 +1205,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { users } = body;
-            console.log(users);
             expect(users).toBeSortedBy("total_votes", { descending: true });
           });
       });
@@ -1217,7 +1215,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { users } = body;
-            console.log(users);
             expect(users).toBeSortedBy("name", { descending: true });
           });
       });
@@ -1228,7 +1225,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { users } = body;
-            console.log(users);
             expect(users).toBeSortedBy("username", { descending: true });
           });
       });
@@ -1239,7 +1235,6 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { users } = body;
-            console.log(users);
             expect(users).toBeSortedBy("username", { descending: false });
           });
       });
@@ -1294,7 +1289,7 @@ describe("testing app.js", () => {
           });
       });
     });
-    describe.only("DELETE", () => {
+    describe("DELETE", () => {
       it("status 204: responds with status code on successful deletion", () => {
         const username = "butter_bridge";
         return request(app).delete(`/api/users/${username}`).expect(204);

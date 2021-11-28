@@ -1309,6 +1309,16 @@ describe("testing app.js", () => {
             expect(msg).toBe("user not found");
           });
       });
+      it("status: 404, responds with message: invalid URL", () => {
+        const username = "butter_bridge";
+        return request(app)
+          .delete(`/api/userrs/${username}`)
+          .expect(404)
+          .then(({ body }) => {
+            const { msg } = body;
+            expect(msg).toBe("Invalid URL");
+          });
+      });
     });
   });
 

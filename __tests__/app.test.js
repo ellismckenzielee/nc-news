@@ -1294,6 +1294,12 @@ describe("testing app.js", () => {
           });
       });
     });
+    describe.only("DELETE", () => {
+      it("status 204: responds with status code on successful deletion", () => {
+        const username = "butter_bridge";
+        return request(app).delete(`/api/users/${username}`).expect(204);
+      });
+    });
   });
   describe("/api/users/:username", () => {
     describe("GET", () => {

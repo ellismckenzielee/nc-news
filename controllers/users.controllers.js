@@ -1,4 +1,4 @@
-const { selectUsers, selectUserByUsername, selectArticlesByUsername, insertUser } = require("../models/users.models");
+const { selectUsers, selectUserByUsername, selectArticlesByUsername, insertUser, removeUserById } = require("../models/users.models");
 
 exports.getUsers = (req, res, next) => {
   console.log(req.params);
@@ -37,4 +37,13 @@ exports.postUser = (req, res, next) => {
       res.status(201).send({ user });
     })
     .catch(next);
+};
+
+exports.deleteUserById = (req, res, next) => {
+  console.log("in delete user controller");
+  console.log(req.params);
+  const { username } = req.params;
+  removeUserById(username).then(() => {
+    res.sendStatus(204);
+  });
 };

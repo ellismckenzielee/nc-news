@@ -48,3 +48,9 @@ exports.insertUser = (username, name, avatar_url) => {
     return rows[0];
   });
 };
+
+exports.removeUserById = (username) => {
+  console.log("in remove user by id model");
+  console.log(username);
+  return db.query("DELETE FROM users WHERE username=$1", [username]).catch(console.log);
+};

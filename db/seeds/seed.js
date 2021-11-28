@@ -35,7 +35,7 @@ const seed = (data) => {
         title VARCHAR NOT NULL,
         topic VARCHAR REFERENCES topics(slug) NOT NULL,
         body TEXT NOT NULL,
-        author VARCHAR REFERENCES users(username) NOT NULL,
+        author VARCHAR NOT NULL REFERENCES users(username) ON DELETE CASCADE,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         votes INT NOT NULL DEFAULT 0
       );`;
@@ -46,62 +46,30 @@ const seed = (data) => {
         comment_id SERIAL PRIMARY KEY,
         body TEXT NOT NULL,
         votes INT DEFAULT 0, 
-        author VARCHAR REFERENCES users(username) NOT NULL,
+        author VARCHAR NOT NULL REFERENCES users(username) ON DELETE CASCADE,
         article_id INT NOT NULL REFERENCES articles(article_id)  ON DELETE CASCADE,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );`;
       return db.query(createCommentsQuery);
     })
     .then(() => {
-      const userDataArray = convertObjectsToArrays(userData, [
-        "username",
-        "name",
-        "avatar_url",
-      ]);
-      const insertUsersQuery = format(
-        `INSERT INTO users (username, name, avatar_url) VALUES %L`,
-        userDataArray
-      );
+      const userDataArray = convertObjectsToArrays(userData, ["username", "name", "avatar_url"]);
+      const insertUsersQuery = format(`INSERT INTO users (username, name, avatar_url) VALUES %L`, userDataArray);
       return db.query(insertUsersQuery);
     })
     .then(() => {
-      const topicDataArray = convertObjectsToArrays(topicData, [
-        "slug",
-        "description",
-      ]);
-      const insertTopicsQuery = format(
-        `INSERT INTO topics (slug, description) VALUES %L`,
-        topicDataArray
-      );
+      const topicDataArray = convertObjectsToArrays(topicData, ["slug", "description"]);
+      const insertTopicsQuery = format(`INSERT INTO topics (slug, description) VALUES %L`, topicDataArray);
       return db.query(insertTopicsQuery);
     })
     .then(() => {
-      const articleDataArray = convertObjectsToArrays(articleData, [
-        "title",
-        "topic",
-        "author",
-        "body",
-        "created_at",
-        "votes",
-      ]);
-      const insertArticlesQuery = format(
-        `INSERT INTO articles (title, topic, author, body, created_at, votes) VALUES %L`,
-        articleDataArray
-      );
+      const articleDataArray = convertObjectsToArrays(articleData, ["title", "topic", "author", "body", "created_at", "votes"]);
+      const insertArticlesQuery = format(`INSERT INTO articles (title, topic, author, body, created_at, votes) VALUES %L`, articleDataArray);
       return db.query(insertArticlesQuery);
     })
     .then(() => {
-      const commentDataArray = convertObjectsToArrays(commentData, [
-        "body",
-        "votes",
-        "author",
-        "article_id",
-        "created_at",
-      ]);
-      const insertCommentsQuery = format(
-        `INSERT INTO comments (body, votes, author, article_id, created_at) VALUES %L`,
-        commentDataArray
-      );
+      const commentDataArray = convertObjectsToArrays(commentData, ["body", "votes", "author", "article_id", "created_at"]);
+      const insertCommentsQuery = format(`INSERT INTO comments (body, votes, author, article_id, created_at) VALUES %L`, commentDataArray);
       return db.query(insertCommentsQuery);
     });
 };

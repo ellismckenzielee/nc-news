@@ -43,7 +43,9 @@ exports.deleteUserById = (req, res, next) => {
   console.log("in delete user controller");
   console.log(req.params);
   const { username } = req.params;
-  removeUserById(username).then(() => {
-    res.sendStatus(204);
-  });
+  removeUserById(username)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(next);
 };

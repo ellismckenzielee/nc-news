@@ -1299,8 +1299,19 @@ describe("testing app.js", () => {
         const username = "butter_bridge";
         return request(app).delete(`/api/users/${username}`).expect(204);
       });
+      it("status 404: responds with message: user not found if username valid but not present", () => {
+        const username = "butterbridges123";
+        return request(app)
+          .delete(`/api/users/${username}`)
+          .expect(404)
+          .then(({ body }) => {
+            const { msg } = body;
+            expect(msg).toBe("user not found");
+          });
+      });
     });
   });
+
   describe("/api/users/:username", () => {
     describe("GET", () => {
       it("status: 200, responds with a user object", () => {

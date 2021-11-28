@@ -52,5 +52,8 @@ exports.insertUser = (username, name, avatar_url) => {
 exports.removeUserById = (username) => {
   console.log("in remove user by id model");
   console.log(username);
-  return db.query("DELETE FROM users WHERE username=$1", [username]).catch(console.log);
+  return db.query("DELETE FROM users WHERE username=$1", [username]).then(({ rowCount }) => {
+    console.log(rowCount);
+    return rowCount !== 0 ? rowCount : Promise.reject({ status: 404, msg: "user not found" });
+  });
 };

@@ -1,10 +1,10 @@
 const db = require("../db/connection");
-const { assembleSelectUsersQuery, handleUserSortQuery, handleUserSortOrder } = require("../utils/utils");
+const { assembleSelectUsersQuery, handleUserSortQuery, handleUserSortOrder, handleUserPagination } = require("../utils/utils");
 exports.selectUsers = (sort_by, order, p) => {
-  if (p === undefined) p = 0;
+  p = handleUserPagination(p);
   sort_by = handleUserSortQuery(sort_by);
   order = handleUserSortOrder(order);
-  if (!(sort_by && order)) return Promise.reject({ status: 400, msg: "Invalid query" });
+  if (!(sort_by && order) || p === false) return Promise.reject({ status: 400, msg: "Invalid query" });
   const query = assembleSelectUsersQuery(sort_by, order, p);
   return db.query(query).then(({ rows }) => {
     return rows;

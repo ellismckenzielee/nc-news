@@ -1271,6 +1271,16 @@ describe("testing app.js", () => {
             expect(users.length).toBe(3);
           });
       });
+      it("status: 400, returns invalid query if incorrect p query passed", () => {
+        const p = "invalid";
+        return request(app)
+          .get(`/api/users?p=${p}`)
+          .expect(400)
+          .then(({ body }) => {
+            const { msg } = body;
+            expect(msg).toBe("Invalid query");
+          });
+      });
     });
     describe("POST", () => {
       it("status: 201, responds with new user", () => {

@@ -1163,8 +1163,8 @@ describe("testing app.js", () => {
     });
   });
   describe("/api/users", () => {
-    describe("GET", () => {
-      it("status: 200, responds with an array of user objects", () => {
+    describe.only("GET", () => {
+      it("status: 200, responds with an array of user objects of length <= 5", () => {
         const testUser = {
           username: expect.any(String),
           avatar_url: expect.any(String),
@@ -1176,7 +1176,7 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { users } = body;
-            expect(users.length).toBe(4);
+            expect(users.length).toBe(5);
             users.forEach((user) => {
               expect(user).toEqual(testUser);
             });
@@ -1205,6 +1205,7 @@ describe("testing app.js", () => {
           .expect(200)
           .then(({ body }) => {
             const { users } = body;
+            console.log(users);
             expect(users).toBeSortedBy("total_votes", { descending: true });
           });
       });
@@ -1256,6 +1257,18 @@ describe("testing app.js", () => {
           .then(({ body }) => {
             const { msg } = body;
             expect(msg).toBe("Invalid query");
+          });
+      });
+      it("status: 200, returns paginated users array when passed p in query", () => {
+        const p = 1;
+
+        return request(app)
+          .get(`/api/users?p=${p}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { users } = body;
+            console.log(users);
+            expect(users.length).toBe(3);
           });
       });
     });

@@ -1,8 +1,8 @@
 const { selectUsers, selectUserByUsername, selectArticlesByUsername, insertUser, removeUserById } = require("../models/users.models");
 
 exports.getUsers = (req, res, next) => {
-  const { sort_by, order } = req.query;
-  selectUsers(sort_by, order)
+  const { sort_by, order, p } = req.query;
+  selectUsers(sort_by, order, p)
     .then((users) => res.status(200).send({ users }))
     .catch(next);
 };

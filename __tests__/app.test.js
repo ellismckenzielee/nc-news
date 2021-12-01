@@ -1281,6 +1281,18 @@ describe("testing app.js", () => {
             expect(msg).toBe("Invalid query");
           });
       });
+      it("status: 200, returns empty array if p value too high", () => {
+        const p = 5;
+
+        return request(app)
+          .get(`/api/users?p=${p}`)
+          .expect(200)
+          .then(({ body }) => {
+            const { users } = body;
+            console.log(users);
+            expect(users.length).toBe(0);
+          });
+      });
     });
     describe("POST", () => {
       it("status: 201, responds with new user", () => {

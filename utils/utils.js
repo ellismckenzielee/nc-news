@@ -130,6 +130,5 @@ utils.assembleSelectUsersQuery = (sort_by, order, p) => {
   let query = `SELECT username, avatar_url, name, COALESCE(comment_votes,0)::int + COALESCE(article_votes,0)::int AS total_votes  FROM users LEFT JOIN (SELECT comments.author, COALESCE(SUM(votes),0) AS comment_votes FROM comments GROUP BY comments.author) AS p ON p.author = username LEFT JOIN (SELECT articles.author, COALESCE(SUM(votes),0) AS article_votes FROM articles GROUP BY articles.author) AS q ON q.author = username ORDER BY ${sort_by} ${order} LIMIT 5 OFFSET ${
     p * 5
   };`;
-  console.log(query);
   return query;
 };
